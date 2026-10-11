@@ -135,9 +135,9 @@ namespace GaRyan2.Utilities
         public static string Epg123MxfPath => Epg123OutputFolder + "epg123.mxf";
 
         /// <summary>
-        /// The file path for the epg123.xmltv file
+        /// The file path for the epg123.xml file
         /// </summary>
-        public static string Epg123XmltvPath => Epg123OutputFolder + "epg123.xmltv";
+        public static string Epg123XmltvPath => Epg123OutputFolder + "epg123.xml";
 
         /// <summary>
         /// The file path for the hdhr2mxf.m3u file
@@ -150,9 +150,9 @@ namespace GaRyan2.Utilities
         public static string Hdhr2MxfMxfPath => Epg123OutputFolder + "hdhr2mxf.mxf";
 
         /// <summary>
-        /// The file path for the hdhr2mxf.xmltv file
+        /// The file path for the hdhr2mxf.xml file
         /// </summary>
-        public static string Hdhr2mxfXmltvPath => Epg123OutputFolder + "hdhr2mxf.xmltv";
+        public static string Hdhr2mxfXmltvPath => Epg123OutputFolder + "hdhr2mxf.xml";
 
         /// <summary>
         /// The file path for the plutotv.m3u file
@@ -160,9 +160,9 @@ namespace GaRyan2.Utilities
         public static string PlutoTvM3uPath => Epg123OutputFolder + "plutotv.m3u";
 
         /// <summary>
-        /// The file path for the plutotv.xmltv file
+        /// The file path for the plutotv.xml file
         /// </summary>
-        public static string PlutoTvXmltvPath => Epg123OutputFolder + "plutotv.xmltv";
+        public static string PlutoTvXmltvPath => Epg123OutputFolder + "plutotv.xml";
 
         /// <summary>
         /// The file path for the stirrtv.m3u file
@@ -170,9 +170,9 @@ namespace GaRyan2.Utilities
         public static string StirrTvM3uPath => Epg123OutputFolder + "stirrtv.m3u";
 
         /// <summary>
-        /// The file path for the stirrtv.xmltv file
+        /// The file path for the stirrtv.xml file
         /// </summary>
-        public static string StirrTvXmltvPath => Epg123OutputFolder + "stirrtv.xmltv";
+        public static string StirrTvXmltvPath => Epg123OutputFolder + "stirrtv.xml";
 
         /// <summary>
         /// The file path for the mmuiplus.json UI+ support file

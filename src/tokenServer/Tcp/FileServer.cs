@@ -200,7 +200,7 @@ namespace epg123Server
                         }
                     }
                     break;
-                case "/output/epg123.xmltv":
+                case "/output/epg123.xml":
                     if (!File.Exists(Helper.Epg123ExePath)) break;
                     filepath = Helper.Epg123XmltvPath;
                     contentType = "text/xml";
@@ -242,7 +242,7 @@ namespace epg123Server
                         }
                     }
                     break;
-                case "/output/hdhr2mxf.xmltv": // SiliconDust provides 14 days of guide listings
+                case "/output/hdhr2mxf.xml": // SiliconDust provides 14 days of guide listings
                     if (!File.Exists(Helper.Hdhr2MxfExePath)) break;
                     filepath = Helper.Hdhr2mxfXmltvPath;
                     contentType = "text/xml";
@@ -270,7 +270,7 @@ namespace epg123Server
                         }
                     }
                     break;
-                case "/output/plutotv.xmltv": // PlutoTV provides 12 hours of guide listings
+                case "/output/plutotv.xml": // PlutoTV provides 12 hours of guide listings
                     if (!File.Exists(Helper.PlutoTvExePath)) break;
                     filepath = Helper.PlutoTvXmltvPath;
                     contentType = "text/xml";
