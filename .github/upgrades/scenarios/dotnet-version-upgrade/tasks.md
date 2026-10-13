@@ -1,16 +1,16 @@
 # Migration Progress
 
-**Progress**: 4/8 tasks complete <progress value="50" max="100"></progress> 50%
+**Progress**: 5/8 tasks complete <progress value="62" max="100"></progress> 62%
 **Status**: In Progress - Task 02-convert-legacy-projects-to-sdk-style
 
 ## Tasks
 
 - ✅ 01-validate-prerequisites: Validate SDK and baseline build state ([Content](tasks/01-validate-prerequisites/task.md), [Progress](tasks/01-validate-prerequisites/progress-details.md))
-- 🔄 02-convert-legacy-projects-to-sdk-style: Convert legacy projects to SDK-style without changing TFMs ([Content](tasks/02-convert-legacy-projects-to-sdk-style/task.md))
+- ✅ 02-convert-legacy-projects-to-sdk-style: Convert legacy projects to SDK-style without changing TFMs ([Content](tasks/02-convert-legacy-projects-to-sdk-style/task.md), [Progress](tasks/02-convert-legacy-projects-to-sdk-style/progress-details.md))
   - ✅ 02.01-convert-mxfxmltvtools: Convert GaRyan2.MxfXmltvTools to SDK-style and validate build ([Content](tasks/02.01-convert-mxfxmltvtools/task.md), [Progress](tasks/02.01-convert-mxfxmltvtools/progress-details.md))
   - ✅ 02.02-convert-tmdb: Convert GaRyan2.Tmdb to SDK-style and validate build ([Content](tasks/02.02-convert-tmdb/task.md), [Progress](tasks/02.02-convert-tmdb/progress-details.md))
   - ✅ 02.03-convert-epg123: Convert epg123 to SDK-style and validate build ([Content](tasks/02.03-convert-epg123/task.md), [Progress](tasks/02.03-convert-epg123/progress-details.md))
-  - 🔲 02.04-validate-sdk-conversion-scope: Validate all converted projects and capture results
+  - ✅ 02.04-validate-sdk-conversion-scope: Validate all converted projects and capture results ([Content](tasks/02.04-validate-sdk-conversion-scope/task.md), [Progress](tasks/02.04-validate-sdk-conversion-scope/progress-details.md))
 - 🔲 03-upgrade-target-frameworks-and-packages: Retarget legacy projects to .NET 10 with dependency-safe sequencing
 - 🔲 04-resolve-api-compatibility-and-runtime-behavior: Fix source/binary API issues for WinForms and drawing-heavy code
 - 🔲 05-final-validation-and-post-upgrade-notes: Validate end-to-end and capture deferred recommendations
