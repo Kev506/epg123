@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using api = GaRyan2.SchedulesDirect;
+using Api = GaRyan2.SchedulesDirect;
 
 namespace epg123.sdJson2mxf
 {
@@ -112,7 +112,7 @@ namespace epg123.sdJson2mxf
             }
 
             // request descriptions from Schedules Direct
-            var responses = api.GetGenericDescriptions(series);
+            var responses = Api.GetGenericDescriptions(series);
             if (responses != null)
             {
                 Parallel.ForEach(responses, (response) =>
@@ -239,7 +239,7 @@ namespace epg123.sdJson2mxf
             }
 
             // request programs from Schedules Direct
-            var responses = api.GetPrograms(programs);
+            var responses = Api.GetPrograms(programs);
             if (responses == null) return false;
 
             // process request response

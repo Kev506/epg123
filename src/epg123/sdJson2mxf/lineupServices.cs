@@ -8,7 +8,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using api = GaRyan2.SchedulesDirect;
+using System.Net.Http;
+using Api = GaRyan2.SchedulesDirect;
 
 namespace epg123.sdJson2mxf
 {
@@ -29,7 +30,7 @@ namespace epg123.sdJson2mxf
             PopulateIncludedExcludedStations(config.StationId);
 
             // query what lineups client is subscribed to
-            var clientLineups = api.GetSubscribedLineups();
+            var clientLineups = Api.GetSubscribedLineups();
             if (clientLineups?.Lineups == null) return false;
 
             // reset counters
@@ -59,7 +60,7 @@ namespace epg123.sdJson2mxf
                 }
 
                 // request the lineup's station maps
-                var lineupMap = api.GetStationChannelMap(clientLineup.Lineup);
+                var lineupMap = Api.GetStationChannelMap(clientLineup.Lineup);
                 if ((lineupMap?.Stations?.Count ?? 0) == 0)
                 {
                     Logger.WriteError($"Subscribed lineup {clientLineup.Lineup} does not contain any stations.");
@@ -323,8 +324,9 @@ namespace epg123.sdJson2mxf
         {
             try
             {
-                var wc = new System.Net.WebClient();
-                using (var stream = new MemoryStream(wc.DownloadData(uri)))
+                using var httpClient = new HttpClient();
+                var bytes = httpClient.GetByteArrayAsync(uri).GetAwaiter().GetResult();
+                using (var stream = new MemoryStream(bytes))
                 {
                     // crop and save image
                     var cropImg = Helper.CropAndResizeImage(Image.FromStream(stream) as Bitmap);

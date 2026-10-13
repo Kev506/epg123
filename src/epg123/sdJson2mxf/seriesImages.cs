@@ -9,7 +9,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using api = GaRyan2.SchedulesDirect;
+using Api = GaRyan2.SchedulesDirect;
 
 namespace epg123.sdJson2mxf
 {
@@ -120,7 +120,7 @@ namespace epg123.sdJson2mxf
             }
 
             // request images from Schedules Direct
-            var responses = api.GetArtwork(series);
+            var responses = Api.GetArtwork(series);
             if (responses != null)
             {
                 Parallel.ForEach(responses, (response) =>
@@ -178,7 +178,7 @@ namespace epg123.sdJson2mxf
                 aspects.Add(image.Aspect);
                 if (!image.Uri.ToLower().StartsWith("http"))
                 {
-                    image.Uri = $"{api.BaseArtworkAddress}image/{image.Uri.ToLower()}";
+                    image.Uri = $"{Api.BaseArtworkAddress}image/{image.Uri.ToLower()}";
                 }
             }
 
@@ -278,7 +278,7 @@ namespace epg123.sdJson2mxf
             {
                 image = artwork.SingleOrDefault(arg => arg.Aspect.ToLower().Equals("4x3"));
             }
-            return image != null ? mxf.FindOrCreateGuideImage(Helper.Standalone ? image.Uri : image.Uri.Replace($"{api.BaseArtworkAddress}", $"http://{HostAddress}:{Helper.TcpUdpPort}/")) : null;
+            return image != null ? mxf.FindOrCreateGuideImage(Helper.Standalone ? image.Uri : image.Uri.Replace($"{Api.BaseArtworkAddress}", $"http://{HostAddress}:{Helper.TcpUdpPort}/")) : null;
         }
     }
 }

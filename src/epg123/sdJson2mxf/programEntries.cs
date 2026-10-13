@@ -9,7 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using api = GaRyan2.SchedulesDirect;
+using Api = GaRyan2.SchedulesDirect;
 
 namespace epg123.sdJson2mxf
 {
@@ -88,7 +88,7 @@ namespace epg123.sdJson2mxf
             }
 
             // request programs from Schedules Direct
-            var responses = api.GetPrograms(programs);
+            var responses = Api.GetPrograms(programs);
             if (responses != null)
             {
                 Parallel.ForEach(responses, (response) =>

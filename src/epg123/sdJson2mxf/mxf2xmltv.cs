@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using api = GaRyan2.SchedulesDirect;
+using Api = GaRyan2.SchedulesDirect;
 
 namespace epg123.sdJson2mxf
 {
@@ -358,7 +358,7 @@ namespace epg123.sdJson2mxf
             }
 
             if (artwork.Count == 0) return null;
-            var ret = artwork.Select(image => new XmltvIcon { Src = Helper.Standalone ? image.Uri : $"{image.Uri.Replace($"{api.BaseArtworkAddress}", $"http://{HostAddress}:{Helper.TcpUdpPort}/")}", Height = image.Height, Width = image.Width }).ToList();
+            var ret = artwork.Select(image => new XmltvIcon { Src = Helper.Standalone ? image.Uri : $"{image.Uri.Replace($"{Api.BaseArtworkAddress}", $"http://{HostAddress}:{Helper.TcpUdpPort}/")}", Height = image.Height, Width = image.Width }).ToList();
 
             if (!config.XmltvSingleImage) return ret;
 
