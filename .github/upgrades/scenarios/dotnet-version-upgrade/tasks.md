@@ -1,6 +1,6 @@
 # Migration Progress
 
-**Progress**: 9/11 tasks complete <progress value="82" max="100"></progress> 82%
+**Progress**: 10/11 tasks complete <progress value="91" max="100"></progress> 91%
 **Status**: In Progress - Task 03-upgrade-target-frameworks-and-packages
 
 ## Tasks
@@ -16,7 +16,7 @@
   - ✅ 03.02-retarget-tmdb: Retarget GaRyan2.Tmdb to net10.0-windows ([Content](tasks/03.02-retarget-tmdb/task.md), [Progress](tasks/03.02-retarget-tmdb/progress-details.md))
   - ✅ 03.03-retarget-epg123: Retarget epg123 to net10.0-windows ([Content](tasks/03.03-retarget-epg123/task.md), [Progress](tasks/03.03-retarget-epg123/progress-details.md))
   - ✅ 03.04-validate-retargeting-scope: Validate all retargeted projects and document outcomes ([Content](tasks/03.04-validate-retargeting-scope/task.md), [Progress](tasks/03.04-validate-retargeting-scope/progress-details.md))
-- 🔲 04-resolve-api-compatibility-and-runtime-behavior: Fix source/binary API issues for WinForms and drawing-heavy code
+- ✅ 04-resolve-api-compatibility-and-runtime-behavior: Fix source/binary API issues for WinForms and drawing-heavy code ([Content](tasks/04-resolve-api-compatibility-and-runtime-behavior/task.md), [Progress](tasks/04-resolve-api-compatibility-and-runtime-behavior/progress-details.md))
 - 🔲 05-final-validation-and-post-upgrade-notes: Validate end-to-end and capture deferred recommendations
 
 **Legend**: ✅ Complete | 🔄 In Progress | 🔲 Pending | ⚠️ Blocked | ❌ Failed
