@@ -3,13 +3,14 @@
   "operationId": "e4b4e8ce-b7bb-4b06-a9fa-31666d98f311",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-10-13T14:59:18.1427717Z",
-  "lastUpdateTime": "2026-10-13T15:09:02.8369701Z",
+  "lastUpdateTime": "2026-10-13T15:11:19.4011626Z",
   "properties": {
     "UpgradeTargetFramework": "net10.0",
     "taskStates": {
       "01-validate-prerequisites": "Completed",
       "02-convert-epgtray-to-sdk-style": "Completed",
-      "03-upgrade-epgtray-to-net10": "Completed"
+      "03-upgrade-epgtray-to-net10": "Completed",
+      "04-final-validation-epgtray": "Completed"
     }
   },
   "folderPath": ""
