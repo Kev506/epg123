@@ -2,49 +2,53 @@
 
 ## Overview
 
-**Target**: Upgrade `src/epgTray/epgTray.csproj` from .NET Framework 4.8 to .NET 10 (`net10.0-windows`).
-**Scope**: 2 assessed projects (1 project requiring upgrade, 1 already-modern dependency), ~2.8k LOC, WinForms-heavy desktop code with significant API compatibility updates expected.
+**Target**: Upgrade `src/hdhr2mxf/hdhr2mxf.csproj` from .NET Framework 4.8 to `net10.0-windows`.
+**Scope**: 4 related projects in assessment, with one classic non-SDK WinForms executable requiring conversion and retargeting.
 
 ### Selected Strategy
-**Bottom-Up (Dependency-First)** — Upgrade from dependency foundation to app layer with ordered validation.
-**Rationale**: Assessment includes multiple projects with a .NET Framework-to-modern transition (`epgTray` depends on already-modern `GaRyan2.Utilities`), which triggers the framework migration strategy rule for multi-project solutions.
+**Bottom-Up (Dependency-First)** — Upgrade from leaf nodes to root applications, tier by tier.
+**Rationale**: The assessed graph includes multiple projects and one remaining .NET Framework app (`hdhr2mxf`) depending on already-modernized libraries.
+
+Dependency shape:
+- Tier 1 (already modernized): `GaRyan2.Utilities`, `GaRyan2.MxfXmltvTools`, `GaRyan2.WmcUtilities`
+- Tier 2 (upgrade target): `hdhr2mxf`
 
 ## Tasks
 
-### 01-validate-prerequisites: Validate SDK and baseline for epgTray scope
+### 01-validate-prerequisites-hdhr2mxf: Validate prerequisites and baseline compatibility
 
-Validate .NET 10 SDK availability, global.json compatibility, and baseline build behavior for `src/epgTray/epgTray.csproj` before structural edits. This task captures current compiler behavior and confirms branch readiness so later failures are clearly attributable to migration changes.
+Validate the .NET 10 SDK/toolchain, confirm dependency projects referenced by `hdhr2mxf` build cleanly on their current `net10.0-windows` targets, and capture baseline build status for the scoped upgrade path. This task establishes a known-good starting point before structural conversion.
 
-Because assessment signals high API impact in a WinForms desktop project, capturing a clean baseline is required before project conversion and retargeting.
+This task also confirms no blocking package compatibility issues beyond the single recommended NuGet update flagged for the project and verifies the branch/workflow state used for execution.
 
-**Done when**: SDK/global.json checks are documented, baseline build results are captured for the scoped project, and the migration preconditions are recorded in task progress details.
-
----
-
-### 02-convert-epgtray-to-sdk-style: Convert epgTray to SDK-style on net48
-
-Convert `src/epgTray/epgTray.csproj` from classic project format to SDK-style while preserving `net48` during this step. Keep WinForms settings, icons/resources, linked files, and project references intact while removing legacy import/reference boilerplate.
-
-This structural conversion is intentionally isolated from target framework changes because conversion and retargeting have different failure modes and must be validated independently.
-
-**Done when**: `epgTray.csproj` is SDK-style on `net48`, legacy package/import structure is replaced with SDK-style equivalents, and the converted project builds successfully before retargeting.
+**Done when**: SDK availability, scoped baseline build results, and dependency compatibility checks are documented for `hdhr2mxf` execution.
 
 ---
 
-### 03-upgrade-epgtray-to-net10: Retarget epgTray to net10.0-windows and remediate API breaks
+### 02-convert-hdhr2mxf-to-sdk-style: Convert hdhr2mxf project format
 
-Retarget `epgTray` to `net10.0-windows`, align Windows/WinForms compatibility requirements, and resolve assessment-reported binary/source incompatibilities inline. Focus includes Windows Forms surface area, `System.Drawing` usage, legacy configuration APIs, and any ACL-related API moves.
+Convert `src/hdhr2mxf/hdhr2mxf.csproj` from classic non-SDK format to SDK-style while remaining on the current framework baseline during conversion mechanics. This isolates project-structure changes from runtime/API changes to reduce failure blast radius.
 
-`GaRyan2.Utilities` is already on modern .NET, so this task upgrades the app layer while keeping dependency compatibility validated during build-fix iterations.
+The conversion includes migrating legacy project structure and package management metadata to modern SDK-style equivalents needed for later retargeting.
 
-**Done when**: `epgTray` targets `net10.0-windows`, required compatibility/package adjustments are applied, migration errors are resolved without deferred stubs, and project build succeeds cleanly.
+**Done when**: `hdhr2mxf.csproj` is SDK-style and builds successfully on the pre-retarget framework configuration.
 
 ---
 
-### 04-final-validation-epgtray: Run scoped and solution validation and capture outcomes
+### 03-upgrade-hdhr2mxf-to-net10: Retarget hdhr2mxf and remediate API/package issues
 
-Run final validation using project and solution builds, fix remaining warnings in modified projects, and execute tests where available. Capture the resulting migration state, including any explicit post-upgrade recommendations (such as deferred CPM adoption) in progress documentation.
+Retarget `hdhr2mxf` to `net10.0-windows`, align package references to supported modern equivalents, and fix the source-incompatible plus behavioral API findings identified in assessment (including `WebRequest.Create` migration and related URI/HTTP behavior checks).
 
-This task confirms the upgrade outcome is stable and leaves auditable results for handoff.
+This task upgrades the remaining application tier after its dependency libraries are already modernized, preserving bottom-up ordering and focusing code changes within the scoped project.
 
-**Done when**: scoped + full solution validation succeeds, warnings are resolved for modified projects, and upgrade outcomes are documented in task progress details.
+**Done when**: `hdhr2mxf` targets `net10.0-windows`, package references are updated for compatibility, and compilation succeeds without upgrade-related errors.
+
+---
+
+### 04-final-validation-hdhr2mxf: Run scoped and solution validation
+
+Run project-level and solution-level validation to confirm the upgraded `hdhr2mxf` integrates with existing net10 dependencies and does not regress shared build quality. Address any remaining warnings in modified projects and confirm runtime-relevant behavior for critical paths.
+
+Document final outcomes and deferred follow-ups (if any) for post-upgrade review.
+
+**Done when**: Scoped and solution builds pass for the upgrade branch, tests (if present) execute successfully, and upgrade results are documented.

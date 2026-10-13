@@ -7,8 +7,8 @@
     "targetId": "net10.0",
     "targetDisplayName": ".NETCoreApp,Version=v10.0"
   },
-  "analysisStartTime": "2026-10-13T15:21:46.7139747Z",
-  "analysisEndTime": "2026-10-13T15:21:47.0282397Z",
+  "analysisStartTime": "2026-10-13T15:34:03.2180294Z",
+  "analysisEndTime": "2026-10-13T15:34:04.0163514Z",
   "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
   "stats": {
     "summary": {
@@ -151,7 +151,7 @@
       },
       "ruleInstances": [
         {
-          "incidentId": "1f72dd69-2e3b-4512-abb1-ea4c589af387",
+          "incidentId": "6276c6d5-9042-4853-b909-70198a164a46",
           "ruleId": "NuGet.0002",
           "projectPath": "hdhr2mxf.csproj",
           "state": "Active",
@@ -174,7 +174,7 @@
           }
         },
         {
-          "incidentId": "9359efbf-8dff-46a8-985d-8a82b4b28d24",
+          "incidentId": "55051642-9ff1-46d6-86c1-eaf004c69c81",
           "ruleId": "Project.0001",
           "projectPath": "hdhr2mxf.csproj",
           "state": "Active",
@@ -184,7 +184,7 @@
           }
         },
         {
-          "incidentId": "dfe84b21-cf1b-403a-aa88-5ba19a6f6c4e",
+          "incidentId": "fad351da-4464-40b8-aced-3ab4288d7976",
           "ruleId": "Project.0002",
           "projectPath": "hdhr2mxf.csproj",
           "state": "Active",
@@ -204,7 +204,7 @@
           }
         },
         {
-          "incidentId": "59584499-c9be-4fa2-9409-c2a731a2f6e2",
+          "incidentId": "bf416fa8-c117-4c9b-8a8d-79036619742b",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
           "projectPath": "hdhr2mxf.csproj",
@@ -234,7 +234,7 @@
           }
         },
         {
-          "incidentId": "b6d996a1-b72a-4a7d-bec4-7627c8ab8539",
+          "incidentId": "e8c8a68a-d1ce-49db-ad31-dcdf50d27408",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
           "projectPath": "hdhr2mxf.csproj",
@@ -264,7 +264,7 @@
           }
         },
         {
-          "incidentId": "1125a8d0-657e-4289-b28a-6c291c8171d8",
+          "incidentId": "95dd74d6-0558-41aa-999f-1c7ce57464f5",
           "ruleId": "Api.0003",
           "description": "Breaking change: XmlSerializer no longer ignores properties marked with ObsoleteAttribute ",
           "projectPath": "hdhr2mxf.csproj",
@@ -294,7 +294,7 @@
           }
         },
         {
-          "incidentId": "82bbc8af-81ad-4017-a9fa-429b6e06edc3",
+          "incidentId": "cdae7d53-50df-4bf5-b5c5-dbb38053ea8d",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
           "projectPath": "hdhr2mxf.csproj",
@@ -324,7 +324,7 @@
           }
         },
         {
-          "incidentId": "b3888056-1ea3-4ef8-9c92-754fc2a4ac09",
+          "incidentId": "be7c9258-e2b2-432a-8868-0f9373de6701",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
           "projectPath": "hdhr2mxf.csproj",
@@ -354,7 +354,7 @@
           }
         },
         {
-          "incidentId": "0e84d471-88fe-4718-855b-f781a70e627a",
+          "incidentId": "48af9ec5-f23a-4fb0-ba04-6875e4219277",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
           "projectPath": "hdhr2mxf.csproj",
@@ -384,7 +384,7 @@
           }
         },
         {
-          "incidentId": "2a21b4ec-2f1f-46c8-96d3-c89c8e1ef66a",
+          "incidentId": "0633815d-656d-4e62-a03b-3c94f48ad382",
           "ruleId": "Api.0002",
           "description": "WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. ",
           "projectPath": "hdhr2mxf.csproj",
