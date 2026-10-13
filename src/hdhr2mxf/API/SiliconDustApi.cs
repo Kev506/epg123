@@ -1,34 +1,17 @@
 ﻿using GaRyan2.Utilities;
 using GaRyan2.XmltvXml;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace GaRyan2.SiliconDustApi
 {
     internal class API : BaseAPI
     {
-        public override async Task<T> GetHttpResponse<T>(HttpMethod method, string uri, object content = null)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(uri);
-            request.UserAgent = UserAgent;
-            request.AutomaticDecompression = DecompressMethods;
-            using (var response = (HttpWebResponse)(await request.GetResponseAsync().ConfigureAwait(false)))
-            {
-                using (var sr = new StreamReader(response.GetResponseStream()))
-                {
-                    return JsonConvert.DeserializeObject<T>(sr.ReadToEnd(), JsonOptions);
-                }
-            }
-        }
-
         public XMLTV DownloadXmltvFile(string authString)
         {
             var response = _httpClient.GetAsync($"https://api.hdhomerun.com/api/xmltv.php?DeviceAuth={Uri.EscapeDataString(authString)}").Result;
