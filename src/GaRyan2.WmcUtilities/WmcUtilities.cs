@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 
 namespace GaRyan2.WmcUtilities
@@ -138,18 +139,6 @@ namespace GaRyan2.WmcUtilities
         }
         #endregion
 
-        class MyWebClient : WebClient
-        {
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                var request = (HttpWebRequest)base.GetWebRequest(address);
-                request.UserAgent = $"EPG123/{Helper.Epg123Version}";
-                request.Timeout = 10 * 60 * 1000; // allow 10 minutes for download to start
-                request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                return request;
-            }
-        }
-
         #region ========== LoadMxf ==========
         public static bool ImportMxfFile(string mxfFile, bool forceImport = false)
         {
@@ -170,9 +159,12 @@ namespace GaRyan2.WmcUtilities
                         {
                             File.Delete(filepath);
                         }
-                        using (var wc = new MyWebClient())
+                        using (var handler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip })
+                        using (var client = new HttpClient(handler) { Timeout = TimeSpan.FromMinutes(10) })
                         {
-                            wc.DownloadFile(new Uri(mxfFile), filepath);
+                            client.DefaultRequestHeaders.UserAgent.ParseAdd($"EPG123/{Helper.Epg123Version}");
+                            var bytes = client.GetByteArrayAsync(uri).GetAwaiter().GetResult();
+                            File.WriteAllBytes(filepath, bytes);
                             mxfFile = filepath;
                         }
                     }

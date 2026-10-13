@@ -1436,10 +1436,9 @@ namespace epg123Client
             // used code by glugalug (glugglug) and modified for epg123
             // https://github.com/glugalug/GuideEditingMisc/tree/master/StoreExplorer
 
-            var sha256Man = new SHA256Managed();
             var clientId = ObjectStore.GetClientId(true);
             const string providerName = @"Anonymous!User";
-            var password = Convert.ToBase64String(sha256Man.ComputeHash(Encoding.Unicode.GetBytes(clientId)));
+            var password = Convert.ToBase64String(SHA256.HashData(Encoding.Unicode.GetBytes(clientId)));
 
             var assembly = Assembly.LoadFile(Environment.ExpandEnvironmentVariables(@"%WINDIR%\ehome\mcstore.dll"));
             var module = assembly.GetModules().First();

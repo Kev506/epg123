@@ -1,26 +1,11 @@
 {
   "scenarioId": "dotnet-version-upgrade",
-  "operationId": "40ef9320-f270-4104-9359-94ea6c5d0d6d",
+  "operationId": "cd14f3b2-2fa1-41cb-a30c-a47c8c68daa8",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
-  "startTime": "2026-10-13T12:45:21.6224559Z",
-  "lastUpdateTime": "2026-10-13T13:41:31.6563114Z",
+  "startTime": "2026-10-13T13:48:34.7920707Z",
+  "lastUpdateTime": "2026-10-13T14:05:12.0944617Z",
   "properties": {
-    "UpgradeTargetFramework": "net10.0",
-    "taskStates": {
-      "01-validate-prerequisites": "Completed",
-      "02-convert-legacy-projects-to-sdk-style": "Completed",
-      "02.01-convert-mxfxmltvtools": "Completed",
-      "02.02-convert-tmdb": "Completed",
-      "02.03-convert-epg123": "Completed",
-      "02.04-validate-sdk-conversion-scope": "Completed",
-      "03-upgrade-target-frameworks-and-packages": "Completed",
-      "03.01-retarget-mxfxmltvtools": "Completed",
-      "03.02-retarget-tmdb": "Completed",
-      "03.03-retarget-epg123": "Completed",
-      "03.04-validate-retargeting-scope": "Completed",
-      "04-resolve-api-compatibility-and-runtime-behavior": "Completed",
-      "05-final-validation-and-post-upgrade-notes": "Completed"
-    }
+    "UpgradeTargetFramework": "net10.0"
   },
   "folderPath": ""
 }

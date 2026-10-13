@@ -10,8 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -131,7 +129,8 @@ namespace epg123Client
         {
             try
             {
-                return Assembly.ReflectionOnlyLoad(assemblyString).GlobalAssemblyCache;
+                Assembly.Load(new AssemblyName(assemblyString));
+                return true;
             }
             catch
             {
@@ -225,11 +224,7 @@ namespace epg123Client
                     proc?.WaitForExit();
                     return 0;
                 case "-storage":
-                    var security = new MutexSecurity();
-                    var role = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
-                    security.AddAccessRule(role);
-
-                    using (var mutex = new Mutex(true, "Global\\EPG123Indexing", out bool createdNew, security))
+                    using (var mutex = new Mutex(true, "Global\\EPG123Indexing", out bool createdNew))
                     {
                         if (!createdNew)
                         {
