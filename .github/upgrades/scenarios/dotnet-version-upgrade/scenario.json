@@ -3,13 +3,14 @@
   "operationId": "1ab84bcc-84f1-4e4d-bfa9-b1948ae5d7b9",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-10-13T15:33:48.9725403Z",
-  "lastUpdateTime": "2026-10-13T15:40:41.0704458Z",
+  "lastUpdateTime": "2026-10-13T15:41:53.9920173Z",
   "properties": {
     "UpgradeTargetFramework": "net10.0",
     "taskStates": {
       "01-validate-prerequisites-hdhr2mxf": "Completed",
       "02-convert-hdhr2mxf-to-sdk-style": "Completed",
-      "03-upgrade-hdhr2mxf-to-net10": "Completed"
+      "03-upgrade-hdhr2mxf-to-net10": "Completed",
+      "04-final-validation-hdhr2mxf": "Completed"
     }
   },
   "folderPath": ""
