@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Windows.Forms;
 
 namespace epg123_gui
@@ -234,7 +234,8 @@ namespace epg123_gui
 
                 try
                 {
-                    using (var stream = new MemoryStream(new WebClient().DownloadData(link)))
+                    using (var client = new HttpClient())
+                    using (var stream = new MemoryStream(client.GetByteArrayAsync(link).GetAwaiter().GetResult()))
                     {
                         imgBitmap = Image.FromStream(stream) as Bitmap;
                     }

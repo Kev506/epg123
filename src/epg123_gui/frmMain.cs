@@ -14,13 +14,14 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using github = GaRyan2.Github;
+using GitHubApi = GaRyan2.Github;
 using SdApi = GaRyan2.SchedulesDirect;
 
 namespace epg123_gui
@@ -95,8 +96,8 @@ namespace epg123_gui
             lvLineupChannels.SmallImageList = lvLineupChannels.LargeImageList = _imageList;
 
             // check for updates
-            github.Initialize($"EPG123/{Helper.Epg123Version}", "epg123");
-            if (github.UpdateAvailable()) lblUpdate.Text = "UPDATE AVAILABLE";
+            GitHubApi.Initialize($"EPG123/{Helper.Epg123Version}", "epg123");
+            if (GitHubApi.UpdateAvailable()) lblUpdate.Text = "UPDATE AVAILABLE";
         }
 
         private void ConfigForm_Shown(object sender, EventArgs e)
@@ -174,7 +175,7 @@ namespace epg123_gui
             if (_logoThread?.IsAlive ?? false)
             {
                 _logoThread.Interrupt();
-                if (!_logoThread.Join(100)) _logoThread.Abort();
+                if (!_logoThread.Join(1000)) Logger.WriteWarning("Logo thread did not stop within timeout during form closing.");
             }
         }
 
@@ -216,14 +217,11 @@ namespace epg123_gui
                 try
                 {
                     // download config file
-                    using (var wc = new WebClient())
-                    {
-                        var cfg = wc.DownloadString(Settings.Default.CfgLocation);
-                        var serializer = new XmlSerializer(typeof(epgConfig));
-                        var reader = new StringReader(cfg);
-                        Config = (epgConfig)serializer.Deserialize(reader);
-                        Logger.WriteInformation($"Successfully downloaded configuration file from {Settings.Default.CfgLocation}.");
-                    }
+                    var cfg = DownloadStringFromUrl(Settings.Default.CfgLocation);
+                    var serializer = new XmlSerializer(typeof(epgConfig));
+                    var reader = new StringReader(cfg);
+                    Config = (epgConfig)serializer.Deserialize(reader);
+                    Logger.WriteInformation($"Successfully downloaded configuration file from {Settings.Default.CfgLocation}.");
 
                     // if new config file on remote server, ensure UseIpAddress is set
                     if (Helper.InstallMethod == Helper.Installation.CLIENT && string.IsNullOrEmpty(Config.UseIpAddress))
@@ -659,7 +657,7 @@ namespace epg123_gui
             if (_logoThread?.IsAlive ?? false)
             {
                 _logoThread.Interrupt();
-                if (!_logoThread.Join(100)) _logoThread.Abort();
+                if (!_logoThread.Join(1000)) Logger.WriteWarning("Logo thread did not stop within timeout before restart.");
             }
             if (_allStations.Count == 0) return;
 
@@ -701,8 +699,7 @@ namespace epg123_gui
                 path = $"{_BaseServerAddress}logos/{filename}";
                 if (!_Bitmaps.ContainsKey(filename))
                 {
-                    using (var client = new WebClient())
-                    using (var ms = new MemoryStream(client.DownloadData(path)))
+                    using (var ms = new MemoryStream(DownloadDataFromUrl(path)))
                     {
                         _Bitmaps.TryAdd(filename, ResizeLogoBitmap(new Bitmap(ms), true));
                     }
@@ -734,8 +731,7 @@ namespace epg123_gui
                 path = $"{_BaseServerAddress}logos/{filename}";
                 if (!_Bitmaps.ContainsKey(filename))
                 {
-                    using (var client = new WebClient())
-                    using (var ms = new MemoryStream(client.DownloadData(path)))
+                    using (var ms = new MemoryStream(DownloadDataFromUrl(path)))
                     {
                         _Bitmaps.TryAdd(filename, ResizeLogoBitmap(new Bitmap(ms), false));
                     }
@@ -752,8 +748,7 @@ namespace epg123_gui
 
             try
             {
-                using (var client = new WebClient())
-                using (var ms = new MemoryStream(client.DownloadData(path)))
+                using (var ms = new MemoryStream(DownloadDataFromUrl(path)))
                 {
                     _Bitmaps.TryAdd(path, ResizeLogoBitmap(Helper.CropAndResizeImage(new Bitmap(ms))));
                     return AddLogoBackground(_Bitmaps[path]);
@@ -916,11 +911,8 @@ namespace epg123_gui
                     {
                         try
                         {
-                            using (var wc = new WebClient())
-                            {
-                                _ = wc.DownloadData($"{_BaseServerAddress}epg123/clearCache");
-                                Logger.WriteInformation("Cache successfully cleared on server.");
-                            }
+                            _ = DownloadDataFromUrl($"{_BaseServerAddress}epg123/clearCache");
+                            Logger.WriteInformation("Cache successfully cleared on server.");
                         }
                         catch { Logger.WriteError("Failed to clear json cache on server."); }
                     }
@@ -1011,12 +1003,9 @@ namespace epg123_gui
             {
                 try
                 {
-                    using (var wc = new WebClient())
-                    {
-                        _ = wc.DownloadData($"{_BaseServerAddress}epg123/clearCache");
-                        Logger.WriteInformation("Cache successfully cleared on server.");
-                        success = true;
-                    }
+                    _ = DownloadDataFromUrl($"{_BaseServerAddress}epg123/clearCache");
+                    Logger.WriteInformation("Cache successfully cleared on server.");
+                    success = true;
                 }
                 catch { Logger.WriteError("Failed to clear cache on server."); }
             }
@@ -1521,13 +1510,31 @@ namespace epg123_gui
             }
         }
 
+        private static byte[] DownloadDataFromUrl(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                return client.GetByteArrayAsync(url).GetAwaiter().GetResult();
+            }
+        }
+
+        private static string DownloadStringFromUrl(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                return client.GetStringAsync(url).GetAwaiter().GetResult();
+            }
+        }
+
         private bool TryHttpAddress(string url)
         {
             try
             {
-                var request = WebRequest.Create($"{url}available");
-                request.GetResponse();
-                return true;
+                using (var client = new HttpClient())
+                {
+                    var response = client.GetAsync($"{url}available").GetAwaiter().GetResult();
+                    return response.IsSuccessStatusCode;
+                }
             }
             catch { }
             return false;

@@ -3,7 +3,7 @@
   "operationId": "dfef8eab-b24f-4688-89d8-e8e70c9b7c88",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-10-13T11:50:50.5340034Z",
-  "lastUpdateTime": "2026-10-13T12:16:02.4431534Z",
+  "lastUpdateTime": "2026-10-13T12:21:11.7669884Z",
   "properties": {
     "UpgradeTargetFramework": "net10.0",
     "taskStates": {
@@ -11,7 +11,8 @@
       "02-convert-sdk-style": "Completed",
       "03-upgrade-target-framework-and-code": "InProgress",
       "03.01-upgrade-utilities": "Completed",
-      "03.02-upgrade-dependent-libraries": "Completed"
+      "03.02-upgrade-dependent-libraries": "Completed",
+      "03.03-upgrade-epg123-gui": "Completed"
     }
   },
   "folderPath": ""
