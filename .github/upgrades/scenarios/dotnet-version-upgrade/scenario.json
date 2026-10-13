@@ -3,7 +3,7 @@
   "operationId": "40ef9320-f270-4104-9359-94ea6c5d0d6d",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
   "startTime": "2026-10-13T12:45:21.6224559Z",
-  "lastUpdateTime": "2026-10-13T13:18:05.8753863Z",
+  "lastUpdateTime": "2026-10-13T13:19:06.6928895Z",
   "properties": {
     "UpgradeTargetFramework": "net10.0",
     "taskStates": {
@@ -13,10 +13,11 @@
       "02.02-convert-tmdb": "Completed",
       "02.03-convert-epg123": "Completed",
       "02.04-validate-sdk-conversion-scope": "Completed",
-      "03-upgrade-target-frameworks-and-packages": "InProgress",
+      "03-upgrade-target-frameworks-and-packages": "Completed",
       "03.01-retarget-mxfxmltvtools": "Completed",
       "03.02-retarget-tmdb": "Completed",
-      "03.03-retarget-epg123": "Completed"
+      "03.03-retarget-epg123": "Completed",
+      "03.04-validate-retargeting-scope": "Completed"
     }
   },
   "folderPath": ""
