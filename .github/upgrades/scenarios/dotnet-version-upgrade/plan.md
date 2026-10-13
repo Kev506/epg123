@@ -2,49 +2,49 @@
 
 ## Overview
 
-**Target**: Upgrade `src/tokenServer/epg123Server.csproj` from .NET Framework 4.8 to modern .NET (`net10.0-windows`).
-**Scope**: Single legacy WinForms/service project plus its already-modern project references (`GaRyan2.Github`, `GaRyan2.Utilities`).
+**Target**: Upgrade `src/epg123Transfer/epg123Transfer.csproj` from .NET Framework 4.8 to modern .NET.
+**Scope**: Single legacy WinForms application plus its already-modern project references (`GaRyan2.MxfXmltvTools`, `GaRyan2.Utilities`, `GaRyan2.WmcUtilities`) across a 4-project assessed dependency graph.
 
 ### Selected Strategy
 **All-At-Once** — Single-project migration executed as one focused upgrade stream.
-**Rationale**: The assessment scope has one project requiring upgrade. Rules for single .NET Framework project migrations favor a simplified all-at-once plan while keeping SDK conversion and TFM migration as separate tasks.
+**Rationale**: `epg123Transfer` is the only project in scope that still targets .NET Framework, while its referenced libraries already target `net10.0-windows`, so the migration can stay app-focused without dependency-tier sequencing.
 
 ## Tasks
 
-### 01-validate-prerequisites: Validate SDK and baseline for tokenServer scope
+### 01-validate-prerequisites: Validate SDK and baseline for epg123Transfer scope
 
-Confirm environment readiness for this specific migration by validating .NET 10 SDK availability, global.json compatibility, and baseline build behavior for the solution before any project-format changes. Capture baseline status for `epg123Server` and its referenced dependencies so failures can be attributed to migration changes.
+Confirm environment readiness for this migration by validating .NET 10 SDK availability, checking global.json compatibility, and capturing the current solution build behavior before any structural edits. This task should also verify the existing branch state and record whether `epg123Transfer` currently builds cleanly on .NET Framework 4.8 with its modernized project references.
 
-The assessment marks this as a low-difficulty project upgrade, but baseline validation is still required to avoid hidden environment drift and to verify the current branch state before structural edits.
+This assessment scope is centered on one application project, but it still carries a large WinForms API surface and several Windows-only dependencies. Establishing a baseline first reduces the risk of misattributing pre-existing issues to the migration work.
 
-**Done when**: SDK/tooling prerequisites are confirmed and baseline restore/build output is documented for the scoped project.
-
----
-
-### 02-convert-tokenserver-to-sdk-style: Convert epg123Server project to SDK-style on current framework
-
-Convert `src/tokenServer/epg123Server.csproj` from classic project format to SDK-style while staying on net48 for this task. This includes migrating `packages.config` to `PackageReference` and preserving service/WinForms-specific settings needed for the existing runtime behavior.
-
-Keeping this conversion isolated from TFM retargeting reduces risk by separating project-system changes from API-surface changes.
-
-**Done when**: `epg123Server.csproj` is SDK-style, package references are migrated, and the project builds successfully on its pre-upgrade framework target.
+**Done when**: SDK and tooling prerequisites are confirmed, and baseline restore/build results are documented for the scoped project and solution.
 
 ---
 
-### 03-upgrade-tokenserver-to-net10: Retarget epg123Server to net10.0-windows and resolve compatibility issues
+### 02-convert-epg123transfer-to-sdk-style: Convert epg123Transfer to SDK-style on its current framework
 
-Retarget `epg123Server` to `net10.0-windows`, align package references for modern .NET, and address assessment-reported API compatibility issues across affected files (`System.ServiceProcess`, `HttpContent`, `Uri`, and `TimeSpan` usage). Ensure referenced projects remain compatible without regressions.
+Convert `src/epg123Transfer/epg123Transfer.csproj` from classic project format to SDK-style while keeping it on its current framework for this task. The conversion must preserve WinForms resources, linked files, Windows Media Center assembly references, ClickOnce-related metadata that still matters, and any project settings needed for the current desktop application behavior.
 
-This is the core upgrade task where project targeting and source-level fixes are applied together after the structural conversion step.
+This project still uses old-style imports and `packages.config`, so the structural conversion needs to stay isolated from target framework changes. Keeping the task narrow makes later retargeting failures easier to diagnose.
 
-**Done when**: `epg123Server` targets `net10.0-windows`, compilation issues tied to the framework transition are resolved, and the project builds cleanly.
+**Done when**: `epg123Transfer.csproj` is SDK-style, package management is updated as needed for SDK-style build semantics, and the project builds successfully on its pre-upgrade framework target.
 
 ---
 
-### 04-final-validation-tokenserver: Run final validation and capture upgrade outcomes
+### 03-upgrade-epg123transfer-to-net10: Retarget epg123Transfer to modern .NET and resolve compatibility issues
 
-Run final build/test validation for the solution with emphasis on the upgraded tokenServer path, confirm no warnings remain in modified projects, and document any intentional follow-up modernization work that is out of scope for this migration.
+Retarget `epg123Transfer` to a Windows-specific modern .NET target, align package and framework references for WinForms on modern .NET, and address the assessment's 765 reported API issues. The work will need to account for heavy Windows Forms usage, `System.Drawing` compatibility, legacy configuration behavior, and Windows-only assemblies referenced by the application.
 
-This closes the upgrade with a verifiable end state and a clear record of any deferred items.
+This is the core migration task. It combines project-level retargeting with code and configuration remediation so the app can compile and run on the new framework without leaving deferred compatibility stubs behind.
 
-**Done when**: Final validation passes for the upgraded scope and outcomes are documented in progress details.
+**Done when**: `epg123Transfer` targets modern .NET for Windows, the required compatibility/package updates are applied, assessment-driven code issues are resolved inline, and the upgraded project builds cleanly.
+
+---
+
+### 04-final-validation-epg123transfer: Run final validation and capture upgrade outcomes
+
+Run final validation for the upgraded scope by building the full solution, fixing remaining warnings in modified projects, and exercising any available automated tests. Document the final state of the migration, including any intentional follow-up work that stays out of scope for this upgrade.
+
+This closes the scenario with a verifiable end state for the application and its dependencies, plus a clear record of anything the user may want to modernize next.
+
+**Done when**: Final validation passes for the upgraded scope, remaining warnings in modified projects are addressed, and upgrade outcomes are documented in task progress details.
