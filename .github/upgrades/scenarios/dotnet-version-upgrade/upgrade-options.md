@@ -1,50 +1,58 @@
-# Upgrade Options — epg123Transfer
+# Upgrade Options — epg123.sln
 
-Assessment: 4 projects analyzed; 1 classic WinForms net48 project requires upgrade; referenced libraries already target net10.0-windows; assessment found 765 API issues in the app project.
+Assessment: 2 projects analyzed; 1 .NET Framework WinForms project requires migration with high API compatibility impact and one already-modern dependency.
 
 ## Strategy
 
 ### Upgrade Strategy
-A single non-SDK-style application project needs migration work, while its referenced projects are already on modern .NET, so an atomic app-focused upgrade is the best fit.
+Multi-project .NET Framework migration was detected, which requires dependency-first sequencing.
 
 | Value | Description |
 |-------|-------------|
-| **All-at-Once** (selected) | Upgrade the remaining legacy application in one atomic pass with separate prerequisite, conversion, upgrade, and validation tasks. |
-| Bottom-Up | Upgrade dependency tiers separately with validation between tiers. |
+| **Bottom-Up** (selected) | Upgrade projects from dependency leaves toward application roots with validation at each stage. |
 
 ## Project Structure
 
 ### Project Approach
-`epg123Transfer` is a Windows desktop application rather than a web project or shared multi-targeted library, so it should be migrated directly in place.
+The in-scope workload is a WinForms desktop app (not ASP.NET System.Web), so side-by-side web migration is not applicable.
 
 | Value | Description |
 |-------|-------------|
-| **In-place** (selected) | Replace the current project format and target framework directly without introducing a parallel application. |
+| **In-place** (selected) | Upgrade project(s) directly within existing structure during this migration run. |
+| Multi-targeting | Keep old and new target frameworks temporarily in the same project during transition. |
+
+### Package Management
+Assessment indicates a framework-to-modern transition with non-SDK legacy project format in scope.
+
+| Value | Description |
+|-------|-------------|
+| **Per-Project (defer CPM to post-migration)** (selected) | Keep package versions in individual project files during migration and adopt CPM afterward. |
+| Central Package Management (CPM) | Move package versions into Directory.Packages.props for centralized version control. |
 
 ## Compatibility
 
 ### Unsupported API Handling
-The assessment reported 754 binary-incompatible APIs and 10 source-incompatible APIs, so breaking API changes must be handled as part of the upgrade.
+Assessment reported binary/source API incompatibilities that must be remediated during upgrade execution.
 
 | Value | Description |
 |-------|-------------|
-| **Fix Inline** (selected) | Resolve API changes in the upgrade task so no stubbed follow-up work remains. |
-| Defer Complex Changes | Apply simple replacements now and create stub-resolution subtasks for complex cases. |
+| **Fix Inline** (selected) | Resolve all API incompatibilities during the upgrade task without deferring with stubs. |
+| Defer Complex Changes | Apply mechanical fixes now and defer hard API migrations into follow-up subtasks. |
 
 ### Windows Native APIs
-The project is a WinForms desktop application with broad Windows-specific API usage, including Windows Forms and System.Drawing.
+Assessment shows heavy WinForms/System.Drawing usage, so Windows compatibility support is required.
 
 | Value | Description |
 |-------|-------------|
-| **Windows Compatibility Pack** (selected) | Add Microsoft.Windows.Compatibility so Windows-only APIs continue to work on modern .NET. |
-| No Compatibility Pack | Surface Windows API issues immediately and replace them with cross-platform alternatives. |
+| **Windows Compatibility Pack** (selected) | Keep Windows-specific APIs available on modern .NET via compatibility package support. |
+| No Compatibility Pack | Surface Windows API breaks immediately and replace with cross-platform alternatives. |
 
 ## Modernization
 
 ### Nullable Reference Types
-The upgrade already has substantial breaking-change work, so nullable enablement should stay out of the initial migration scope.
+Migration scope is compatibility-heavy and should avoid adding nullable warning churn during framework transition.
 
 | Value | Description |
 |-------|-------------|
-| **Leave Disabled** (selected) | Keep nullable reference types off during the framework migration. |
-| Enable Nullable Reference Types | Enable nullable analysis now and fix the resulting warnings during the upgrade. |
+| **Leave Disabled** (selected) | Keep nullable reference types disabled during migration and consider enabling in a follow-up effort. |
+| Enable Nullable Reference Types | Enable nullable annotations now and remediate resulting compiler warnings during this migration. |

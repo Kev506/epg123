@@ -7,8 +7,8 @@
   },
   "projects": [
     {
-      "name": "epg123Client",
-      "path": "epg123Client.csproj",
+      "name": "epgTray",
+      "path": "epgTray.csproj",
       "isSdk": false,
       "currentFrameworks": [
         "net48"
@@ -18,87 +18,15 @@
         "packages": [],
         "assemblies": [
           {
-            "name": "BDATunePIA",
-            "version": "6.1.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\wmc_dlls\\w7\\BDATunePIA.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "mcepg",
-            "version": "6.1.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\wmc_dlls\\w7\\mcepg.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "mcstore",
-            "version": "6.1.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\wmc_dlls\\w7\\mcstore.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "Microsoft.VisualBasic",
-            "version": "10.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\Microsoft.VisualBasic.dll",
-            "compatibility": "valid"
-          },
-          {
             "name": "System",
             "version": "4.0.0.0",
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.ComponentModel.DataAnnotations",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.ComponentModel.DataAnnotations.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.Configuration.Install",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Configuration.Install.dll",
             "compatibility": "valid"
           },
           {
@@ -107,82 +35,10 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Core.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.DirectoryServices",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.DirectoryServices.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.Drawing",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Drawing.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.Management",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Management.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.ServiceProcess",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.ServiceProcess.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.Web",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Web.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "System.Windows.Forms",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Windows.Forms.dll",
             "compatibility": "valid"
           },
           {
@@ -191,7 +47,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Xml.Linq.dll",
@@ -203,7 +59,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Data.DataSetExtensions.dll",
@@ -215,7 +71,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\Microsoft.CSharp.dll",
@@ -227,10 +83,46 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Data.dll",
+            "compatibility": "valid"
+          },
+          {
+            "name": "System.Deployment",
+            "version": "4.0.0.0",
+            "isTransitive": false,
+            "definedIn": [
+              {
+                "path": "epgTray.csproj"
+              }
+            ],
+            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Deployment.dll",
+            "compatibility": "valid"
+          },
+          {
+            "name": "System.Drawing",
+            "version": "4.0.0.0",
+            "isTransitive": false,
+            "definedIn": [
+              {
+                "path": "epgTray.csproj"
+              }
+            ],
+            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Drawing.dll",
+            "compatibility": "valid"
+          },
+          {
+            "name": "System.Windows.Forms",
+            "version": "4.0.0.0",
+            "isTransitive": false,
+            "definedIn": [
+              {
+                "path": "epgTray.csproj"
+              }
+            ],
+            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Windows.Forms.dll",
             "compatibility": "valid"
           },
           {
@@ -239,22 +131,10 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Xml.dll",
-            "compatibility": "valid"
-          },
-          {
-            "name": "WindowsBase",
-            "version": "4.0.0.0",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\WindowsBase.dll",
             "compatibility": "valid"
           },
           {
@@ -267,80 +147,17 @@
         ],
         "projectReferences": [
           {
-            "name": "GaRyan2.Github",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "referencedProjectPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\GaRyan2.Github\\GaRyan2.Github.csproj",
-            "compatibility": "valid"
-          },
-          {
-            "name": "GaRyan2.MxfXmltvTools",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "referencedProjectPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\GaRyan2.MxfXmltvTools\\GaRyan2.MxfXmltvTools.csproj",
-            "compatibility": "valid"
-          },
-          {
             "name": "GaRyan2.Utilities",
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epg123Client.csproj"
+                "path": "epgTray.csproj"
               }
             ],
             "referencedProjectPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\GaRyan2.Utilities\\GaRyan2.Utilities.csproj",
             "compatibility": "valid"
-          },
-          {
-            "name": "GaRyan2.WmcUtilities",
-            "isTransitive": false,
-            "definedIn": [
-              {
-                "path": "epg123Client.csproj"
-              }
-            ],
-            "referencedProjectPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\GaRyan2.WmcUtilities\\GaRyan2.WmcUtilities.csproj",
-            "compatibility": "valid"
           }
         ],
-        "frameworkReferences": []
-      }
-    },
-    {
-      "name": "GaRyan2.Github",
-      "path": "%USERPROFILE%\\source\\repos\\epg123\\src\\GaRyan2.Github\\GaRyan2.Github.csproj",
-      "isSdk": true,
-      "currentFrameworks": [
-        "net10.0-windows"
-      ],
-      "targetFramework": "net10.0",
-      "dependencies": {
-        "packages": [],
-        "assemblies": [],
-        "projectReferences": [],
-        "frameworkReferences": []
-      }
-    },
-    {
-      "name": "GaRyan2.MxfXmltvTools",
-      "path": "%USERPROFILE%\\source\\repos\\epg123\\src\\GaRyan2.MxfXmltvTools\\GaRyan2.MxfXmltvTools.csproj",
-      "isSdk": true,
-      "currentFrameworks": [
-        "net10.0-windows"
-      ],
-      "targetFramework": "net10.0",
-      "dependencies": {
-        "packages": [],
-        "assemblies": [],
-        "projectReferences": [],
         "frameworkReferences": []
       }
     },
@@ -350,21 +167,6 @@
       "isSdk": true,
       "currentFrameworks": [
         "net10.0-windows"
-      ],
-      "targetFramework": "net10.0",
-      "dependencies": {
-        "packages": [],
-        "assemblies": [],
-        "projectReferences": [],
-        "frameworkReferences": []
-      }
-    },
-    {
-      "name": "GaRyan2.WmcUtilities",
-      "path": "%USERPROFILE%\\source\\repos\\epg123\\src\\GaRyan2.WmcUtilities\\GaRyan2.WmcUtilities.csproj",
-      "isSdk": false,
-      "currentFrameworks": [
-        "net48"
       ],
       "targetFramework": "net10.0",
       "dependencies": {

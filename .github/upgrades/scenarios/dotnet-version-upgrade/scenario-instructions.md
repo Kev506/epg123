@@ -2,17 +2,18 @@
 
 ## Preferences
 - **Flow Mode**: Automatic
-- **Scope**: `src/epg123Transfer/epg123Transfer.csproj`
+- **Scope**: `src/epgTray/epgTray.csproj`
 - **Target Framework**: `net10.0`
 
 ## Upgrade Options
 **Source**: .github/upgrades/scenarios/dotnet-version-upgrade/upgrade-options.md
 
 ### Strategy
-- Upgrade Strategy: All-at-Once
+- Upgrade Strategy: Bottom-Up
 
 ### Project Structure
 - Project Approach: In-place
+- Package Management: Per-Project (defer CPM to post-migration)
 
 ### Compatibility
 - Unsupported API Handling: Fix Inline
@@ -22,21 +23,21 @@
 - Nullable Reference Types: Leave Disabled
 
 ## Strategy
-**Selected**: All-at-Once
-**Rationale**: `epg123Transfer` is the only remaining legacy application in scope, while its referenced projects already target modern .NET, so a single atomic application-focused migration is the best fit.
+**Selected**: Bottom-Up (Dependency-First)
+**Rationale**: The assessment includes two projects with a .NET Framework project (`epgTray`) depending on an already-upgraded modern .NET library, which falls under the framework migration rule requiring a dependency-first sequencing model for multi-project scope.
 
 ### Execution Constraints
-- Validate SDK/global.json compatibility and capture a baseline before structural changes.
-- Keep SDK-style conversion separate from target framework retargeting and API remediation.
-- Retarget `epg123Transfer` to a Windows-specific modern TFM during the upgrade task and resolve package/API issues inline.
-- Perform a bounded build-fix pass after project and package changes, then run full scoped validation.
-- Complete the scenario only after the solution builds cleanly and validation results are captured.
+- Validate SDK/global.json compatibility and baseline build behavior before migration changes.
+- Keep SDK-style conversion isolated from target framework retargeting.
+- Upgrade `epgTray` to `net10.0-windows` and resolve API compatibility issues inline.
+- Use bounded build-fix passes after structural and retargeting changes, then run final scoped and solution validation.
+- Record deferred CPM adoption as post-migration follow-up once all scoped projects are on SDK-style modern .NET.
 
 ## Source Control
-- **Source Branch**: `upgrade-dotnet-10-3`
-- **Working Branch**: `upgrade-dotnet-10-4`
-- **Commit Strategy**: Single Commit at End
+- **Source Branch**: `upgrade-dotnet-10-4`
+- **Working Branch**: `upgrade-dotnet-10-5`
+- **Commit Strategy**: After Each Task
 - **Branch Sync**: Auto (Merge)
 
 ## Build Tool Decisions
-- **src/epg123Transfer/epg123Transfer.csproj**: Visual Studio build / `run_build` preferred for validation (SDK-style WinForms project with `.resx` resources and icons)
+- **src/epgTray/epgTray.csproj**: Visual Studio build / `run_build` preferred for validation (SDK-style WinForms project with `.resx` resources and icons)

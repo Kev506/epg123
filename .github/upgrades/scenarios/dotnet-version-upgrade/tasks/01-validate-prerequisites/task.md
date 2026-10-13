@@ -1,22 +1,22 @@
-# 01-validate-prerequisites: Validate SDK and baseline for epg123Transfer scope
+# 01-validate-prerequisites: Validate SDK and baseline for epgTray scope
 
-Verify the local environment is ready for the `epg123Transfer.csproj` migration to .NET 10, including SDK availability, global.json compatibility, and baseline build behavior in the current mixed-target solution state.
+Verify the local environment is ready for the `epgTray.csproj` migration to .NET 10, including SDK availability, global.json compatibility, and baseline build behavior before structural project conversion.
 
-This task captures factual pre-upgrade conditions so downstream errors can be attributed to migration work instead of environment drift.
+This task captures the pre-upgrade state so downstream migration issues can be attributed correctly.
 
 ## Scope Inventory
 
-- **Projects in scope**: `epg123Transfer` (upgrade target), plus referenced dependencies `GaRyan2.MxfXmltvTools`, `GaRyan2.Utilities`, and `GaRyan2.WmcUtilities` already on `net10.0-windows`
-- **Distinct concerns**: SDK readiness, global.json gating, baseline compile status across mixed TFMs, and build tool selection for a non-SDK WinForms project
-- **Assessment signals considered**: `epg123Transfer` is a non-SDK `net48` WinForms project with SDK-style conversion and target framework retargeting required; the assessment reported 765 API issues concentrated in Windows Forms and `System.Drawing`
-- **Loaded skills**: `building-projects` for build-tool and baseline validation behavior
+- **Projects in scope**: `epgTray` (upgrade target), plus referenced projects that already target modern .NET (`GaRyan2.Utilities`, `GaRyan2.MxfXmltvTools`, `GaRyan2.WmcUtilities`)
+- **Distinct concerns**: SDK readiness, global.json constraints, baseline compatibility failures, and build-tool decision for a classic WinForms project
+- **Assessment signals considered**: `epgTray` is a non-SDK `net48` WinForms project with 292 compatibility issues (249 binary + 43 source) and a proposed target of `net10.0-windows`
+- **Loaded skills**: `building-projects` for selecting/validating build behavior during migration
 
 ## Research Findings
 
 - `validate_dotnet_sdk_installation(net10.0)` returned **Compatible SDK found**.
-- `validate_dotnet_sdk_in_globaljson(net10.0, epg123.sln, epg123Transfer.csproj)` returned **Success: no global.json config found**.
-- The build path for `epg123Transfer` should stay on Visual Studio/`msbuild.exe` style tooling until conversion because it is a non-SDK WinForms project with resources.
-- Baseline solution build (`run_build`) **failed** before migration edits with expected cross-target reference errors because `epg123Transfer` still targets `net48` while its referenced projects target `net10.0-windows`.
-- The failing project references are `GaRyan2.MxfXmltvTools`, `GaRyan2.Utilities`, and `GaRyan2.WmcUtilities`, confirming that retargeting the legacy desktop app is required to restore compatibility.
+- `validate_dotnet_sdk_in_globaljson(net10.0, epg123.sln, epgTray.csproj)` returned **Success: no global.json config found**.
+- Baseline build for `src/epgTray/epgTray.csproj` failed prior to migration due to expected cross-target project-reference incompatibility (`net48` cannot reference `net10.0-windows` dependencies).
+- The baseline errors confirmed this migration dependency mismatch for references to `GaRyan2.MxfXmltvTools`, `GaRyan2.Utilities`, and `GaRyan2.WmcUtilities`.
+- Build tool decision for migration flow: use Visual Studio build/`run_build` for this WinForms/resource-heavy project and re-validate after conversion and retargeting.
 
-**Done when**: SDK prerequisites are confirmed and baseline restore/build outcomes are documented for the scoped project and solution context.
+**Done when**: SDK prerequisites are confirmed and baseline build outcomes are documented for the scoped project and solution context.

@@ -1,16 +1,13 @@
 {
   "scenarioId": "dotnet-version-upgrade",
-  "operationId": "8c0c8b38-fe17-4ca5-91b7-058175e3e06b",
+  "operationId": "e4b4e8ce-b7bb-4b06-a9fa-31666d98f311",
   "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
-  "startTime": "2026-10-13T14:30:55.6233979Z",
-  "lastUpdateTime": "2026-10-13T14:56:55.7405628Z",
+  "startTime": "2026-10-13T14:59:18.1427717Z",
+  "lastUpdateTime": "2026-10-13T15:03:12.4608569Z",
   "properties": {
     "UpgradeTargetFramework": "net10.0",
     "taskStates": {
-      "01-validate-prerequisites": "Completed",
-      "02-convert-epg123transfer-to-sdk-style": "Completed",
-      "03-upgrade-epg123transfer-to-net10": "Completed",
-      "04-final-validation-epg123transfer": "Completed"
+      "01-validate-prerequisites": "Completed"
     }
   },
   "folderPath": ""

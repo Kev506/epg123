@@ -2,49 +2,49 @@
 
 ## Overview
 
-**Target**: Upgrade `src/epg123Transfer/epg123Transfer.csproj` from .NET Framework 4.8 to modern .NET.
-**Scope**: Single legacy WinForms application plus its already-modern project references (`GaRyan2.MxfXmltvTools`, `GaRyan2.Utilities`, `GaRyan2.WmcUtilities`) across a 4-project assessed dependency graph.
+**Target**: Upgrade `src/epgTray/epgTray.csproj` from .NET Framework 4.8 to .NET 10 (`net10.0-windows`).
+**Scope**: 2 assessed projects (1 project requiring upgrade, 1 already-modern dependency), ~2.8k LOC, WinForms-heavy desktop code with significant API compatibility updates expected.
 
 ### Selected Strategy
-**All-At-Once** — Single-project migration executed as one focused upgrade stream.
-**Rationale**: `epg123Transfer` is the only project in scope that still targets .NET Framework, while its referenced libraries already target `net10.0-windows`, so the migration can stay app-focused without dependency-tier sequencing.
+**Bottom-Up (Dependency-First)** — Upgrade from dependency foundation to app layer with ordered validation.
+**Rationale**: Assessment includes multiple projects with a .NET Framework-to-modern transition (`epgTray` depends on already-modern `GaRyan2.Utilities`), which triggers the framework migration strategy rule for multi-project solutions.
 
 ## Tasks
 
-### 01-validate-prerequisites: Validate SDK and baseline for epg123Transfer scope
+### 01-validate-prerequisites: Validate SDK and baseline for epgTray scope
 
-Confirm environment readiness for this migration by validating .NET 10 SDK availability, checking global.json compatibility, and capturing the current solution build behavior before any structural edits. This task should also verify the existing branch state and record whether `epg123Transfer` currently builds cleanly on .NET Framework 4.8 with its modernized project references.
+Validate .NET 10 SDK availability, global.json compatibility, and baseline build behavior for `src/epgTray/epgTray.csproj` before structural edits. This task captures current compiler behavior and confirms branch readiness so later failures are clearly attributable to migration changes.
 
-This assessment scope is centered on one application project, but it still carries a large WinForms API surface and several Windows-only dependencies. Establishing a baseline first reduces the risk of misattributing pre-existing issues to the migration work.
+Because assessment signals high API impact in a WinForms desktop project, capturing a clean baseline is required before project conversion and retargeting.
 
-**Done when**: SDK and tooling prerequisites are confirmed, and baseline restore/build results are documented for the scoped project and solution.
-
----
-
-### 02-convert-epg123transfer-to-sdk-style: Convert epg123Transfer to SDK-style on its current framework
-
-Convert `src/epg123Transfer/epg123Transfer.csproj` from classic project format to SDK-style while keeping it on its current framework for this task. The conversion must preserve WinForms resources, linked files, Windows Media Center assembly references, ClickOnce-related metadata that still matters, and any project settings needed for the current desktop application behavior.
-
-This project still uses old-style imports and `packages.config`, so the structural conversion needs to stay isolated from target framework changes. Keeping the task narrow makes later retargeting failures easier to diagnose.
-
-**Done when**: `epg123Transfer.csproj` is SDK-style, package management is updated as needed for SDK-style build semantics, and the project builds successfully on its pre-upgrade framework target.
+**Done when**: SDK/global.json checks are documented, baseline build results are captured for the scoped project, and the migration preconditions are recorded in task progress details.
 
 ---
 
-### 03-upgrade-epg123transfer-to-net10: Retarget epg123Transfer to modern .NET and resolve compatibility issues
+### 02-convert-epgtray-to-sdk-style: Convert epgTray to SDK-style on net48
 
-Retarget `epg123Transfer` to a Windows-specific modern .NET target, align package and framework references for WinForms on modern .NET, and address the assessment's 765 reported API issues. The work will need to account for heavy Windows Forms usage, `System.Drawing` compatibility, legacy configuration behavior, and Windows-only assemblies referenced by the application.
+Convert `src/epgTray/epgTray.csproj` from classic project format to SDK-style while preserving `net48` during this step. Keep WinForms settings, icons/resources, linked files, and project references intact while removing legacy import/reference boilerplate.
 
-This is the core migration task. It combines project-level retargeting with code and configuration remediation so the app can compile and run on the new framework without leaving deferred compatibility stubs behind.
+This structural conversion is intentionally isolated from target framework changes because conversion and retargeting have different failure modes and must be validated independently.
 
-**Done when**: `epg123Transfer` targets modern .NET for Windows, the required compatibility/package updates are applied, assessment-driven code issues are resolved inline, and the upgraded project builds cleanly.
+**Done when**: `epgTray.csproj` is SDK-style on `net48`, legacy package/import structure is replaced with SDK-style equivalents, and the converted project builds successfully before retargeting.
 
 ---
 
-### 04-final-validation-epg123transfer: Run final validation and capture upgrade outcomes
+### 03-upgrade-epgtray-to-net10: Retarget epgTray to net10.0-windows and remediate API breaks
 
-Run final validation for the upgraded scope by building the full solution, fixing remaining warnings in modified projects, and exercising any available automated tests. Document the final state of the migration, including any intentional follow-up work that stays out of scope for this upgrade.
+Retarget `epgTray` to `net10.0-windows`, align Windows/WinForms compatibility requirements, and resolve assessment-reported binary/source incompatibilities inline. Focus includes Windows Forms surface area, `System.Drawing` usage, legacy configuration APIs, and any ACL-related API moves.
 
-This closes the scenario with a verifiable end state for the application and its dependencies, plus a clear record of anything the user may want to modernize next.
+`GaRyan2.Utilities` is already on modern .NET, so this task upgrades the app layer while keeping dependency compatibility validated during build-fix iterations.
 
-**Done when**: Final validation passes for the upgraded scope, remaining warnings in modified projects are addressed, and upgrade outcomes are documented in task progress details.
+**Done when**: `epgTray` targets `net10.0-windows`, required compatibility/package adjustments are applied, migration errors are resolved without deferred stubs, and project build succeeds cleanly.
+
+---
+
+### 04-final-validation-epgtray: Run scoped and solution validation and capture outcomes
+
+Run final validation using project and solution builds, fix remaining warnings in modified projects, and execute tests where available. Capture the resulting migration state, including any explicit post-upgrade recommendations (such as deferred CPM adoption) in progress documentation.
+
+This task confirms the upgrade outcome is stable and leaves auditable results for handoff.
+
+**Done when**: scoped + full solution validation succeeds, warnings are resolved for modified projects, and upgrade outcomes are documented in task progress details.
