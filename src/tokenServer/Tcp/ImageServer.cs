@@ -8,11 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 
 namespace epg123Server
 {
+    [SupportedOSPlatform("windows")]
     class HttpImageServer : IDisposable
     {
         private bool _limitExceeded;
