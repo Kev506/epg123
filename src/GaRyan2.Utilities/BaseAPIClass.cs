@@ -50,9 +50,6 @@ namespace GaRyan2
         /// </summary>
         public virtual void Initialize()
         {
-            ServicePointManager.DefaultConnectionLimit = 10;
-            ServicePointManager.FindServicePoint(new Uri(BaseAddress)).ConnectionLeaseTimeout = 5 * 60 * 1000;
-
             _httpClient = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressMethods })
             {
                 BaseAddress = new Uri(BaseAddress),
