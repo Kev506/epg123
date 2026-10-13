@@ -7,8 +7,23 @@
   },
   "projects": [
     {
-      "name": "epgTray",
-      "path": "epgTray.csproj",
+      "name": "GaRyan2.Utilities",
+      "path": "%USERPROFILE%\\source\\repos\\epg123\\src\\GaRyan2.Utilities\\GaRyan2.Utilities.csproj",
+      "isSdk": true,
+      "currentFrameworks": [
+        "net10.0-windows"
+      ],
+      "targetFramework": "net10.0",
+      "dependencies": {
+        "packages": [],
+        "assemblies": [],
+        "projectReferences": [],
+        "frameworkReferences": []
+      }
+    },
+    {
+      "name": "logViewer",
+      "path": "logViewer.csproj",
       "isSdk": false,
       "currentFrameworks": [
         "net48"
@@ -23,7 +38,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.dll",
@@ -35,10 +50,22 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Core.dll",
+            "compatibility": "valid"
+          },
+          {
+            "name": "System.Design",
+            "version": "4.0.0.0",
+            "isTransitive": false,
+            "definedIn": [
+              {
+                "path": "logViewer.csproj"
+              }
+            ],
+            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Design.dll",
             "compatibility": "valid"
           },
           {
@@ -47,7 +74,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Xml.Linq.dll",
@@ -59,7 +86,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Data.DataSetExtensions.dll",
@@ -71,7 +98,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\Microsoft.CSharp.dll",
@@ -83,7 +110,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Data.dll",
@@ -95,7 +122,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Deployment.dll",
@@ -107,10 +134,22 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Drawing.dll",
+            "compatibility": "valid"
+          },
+          {
+            "name": "System.Net.Http",
+            "version": "4.2.0.0",
+            "isTransitive": false,
+            "definedIn": [
+              {
+                "path": "logViewer.csproj"
+              }
+            ],
+            "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Net.Http.dll",
             "compatibility": "valid"
           },
           {
@@ -119,7 +158,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Windows.Forms.dll",
@@ -131,7 +170,7 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "physicalPath": "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.8\\System.Xml.dll",
@@ -151,28 +190,13 @@
             "isTransitive": false,
             "definedIn": [
               {
-                "path": "epgTray.csproj"
+                "path": "logViewer.csproj"
               }
             ],
             "referencedProjectPath": "C:\\Users\\sally\\source\\repos\\epg123\\src\\GaRyan2.Utilities\\GaRyan2.Utilities.csproj",
             "compatibility": "valid"
           }
         ],
-        "frameworkReferences": []
-      }
-    },
-    {
-      "name": "GaRyan2.Utilities",
-      "path": "%USERPROFILE%\\source\\repos\\epg123\\src\\GaRyan2.Utilities\\GaRyan2.Utilities.csproj",
-      "isSdk": true,
-      "currentFrameworks": [
-        "net10.0-windows"
-      ],
-      "targetFramework": "net10.0",
-      "dependencies": {
-        "packages": [],
-        "assemblies": [],
-        "projectReferences": [],
         "frameworkReferences": []
       }
     }
