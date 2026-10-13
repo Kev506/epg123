@@ -4,6 +4,7 @@
 - **Flow Mode**: Automatic
 - **Target Framework**: net10.0
 - **Scope**: src/hdhr2mxf/hdhr2mxf.csproj
+- **New Requested Scope**: src/logViewer/logViewer.csproj (user request, 2026-10-13)
 
 ## Strategy
 **Selected**: Bottom-Up (Dependency-First)
