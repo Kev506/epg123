@@ -1,17 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{92457D68-D0BD-4F1F-ACF2-E5C3694ADCC5}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>epg123_gui</RootNamespace>
-    <AssemblyName>epg123_gui</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -27,28 +17,16 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\EPG123.ico</ApplicationIcon>
@@ -58,18 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\epg123\epgConfig.cs">
@@ -78,110 +48,14 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Controls\Lineup.cs" />
-    <Compile Include="Controls\ListView.cs" />
-    <Compile Include="Controls\Station.cs" />
-    <Compile Include="ElevatedButton.cs">
+    <Compile Update="ElevatedButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="frmLineupAdd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmLineupAdd.designer.cs">
-      <DependentUpon>frmLineupAdd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmLineups.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmLineups.designer.cs">
-      <DependentUpon>frmLineups.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmLogos.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmLogos.designer.cs">
-      <DependentUpon>frmLogos.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmMain.designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmPreview.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmPreview.designer.cs">
-      <DependentUpon>frmPreview.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ListViewSorter.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\frmRemoteServers.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Server\frmRemoteServers.designer.cs">
-      <DependentUpon>frmRemoteServers.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="frmLineupAdd.resx">
-      <DependentUpon>frmLineupAdd.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmLineups.resx">
-      <DependentUpon>frmLineups.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmLogos.resx">
-      <DependentUpon>frmLogos.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmPreview.resx">
-      <DependentUpon>frmPreview.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="Server\frmRemoteServers.resx">
-      <DependentUpon>frmRemoteServers.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GaRyan2.Github\GaRyan2.Github.csproj">
-      <Project>{e82ca8a5-b4b2-4617-8caa-e4b93a4db330}</Project>
-      <Name>GaRyan2.Github</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.SchedulesDirect\GaRyan2.SchedulesDirect.csproj">
-      <Project>{2269b886-0160-4099-9a39-13b888a5f69a}</Project>
-      <Name>GaRyan2.SchedulesDirect</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj">
-      <Project>{ccd05d81-0df1-45ff-9931-a50369526225}</Project>
-      <Name>GaRyan2.Utilities</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\GaRyan2.Github\GaRyan2.Github.csproj" />
+    <ProjectReference Include="..\GaRyan2.SchedulesDirect\GaRyan2.SchedulesDirect.csproj" />
+    <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.2">
@@ -195,14 +69,4 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EPG123.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GreenLight.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RedLight.ico" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
