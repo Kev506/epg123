@@ -12,18 +12,24 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Windows.Forms;
+using epg123_gui.ViewModels;
 
 namespace epg123_gui
 {
     public partial class frmLogos : Form
     {
         private readonly LineupStation _station;
+        private readonly LogosViewModel _viewModel = new LogosViewModel();
         private PictureBox _selectedBox = null;
         private readonly string _customLogo;
         private readonly bool isRemote = Settings.Default.CfgLocation.StartsWith("http");
         private readonly string baseLogoPath = Settings.Default.CfgLocation.Replace("\\epg123.cfg", "\\logos\\").Replace("/epg123/epg123.cfg", "/logos/");
         private readonly List<string> availableLogos;
-        public bool LogoChanged;
+        public bool LogoChanged
+        {
+            get => _viewModel.LogoChanged;
+            private set => _viewModel.LogoChanged = value;
+        }
 
         private static Color DarkPreviewBackColor =>
             Application.IsDarkModeEnabled ? Color.FromArgb(255, 45, 45, 48) : Color.FromArgb(255, 6, 15, 30);
@@ -34,13 +40,15 @@ namespace epg123_gui
         public frmLogos(LineupStation station)
         {
             InitializeComponent();
+            DataContext = _viewModel;
+            label7.DataBindings.Add(nameof(Label.Text), _viewModel, nameof(LogosViewModel.StationSummary), true, DataSourceUpdateMode.OnPropertyChanged);
 
             _station = station;
             _customLogo = $"{station.Callsign}_c.png";
             if (isRemote) availableLogos = SchedulesDirect.GetCustomLogosFromServer($"{baseLogoPath}custom");
             else availableLogos = Directory.GetFiles(Helper.Epg123LogosFolder, "*.png").ToList().Select(logo => logo.Substring(Helper.Epg123LogosFolder.Length)).ToList();
 
-            label7.Text = $"{station.Callsign}\n{station.Name}\n{station.Affiliate}";
+            _viewModel.StationSummary = $"{station.Callsign}\n{station.Name}\n{station.Affiliate}";
         }
 
         private void frmLogos_Load(object sender, EventArgs e)

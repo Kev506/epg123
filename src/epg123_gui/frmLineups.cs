@@ -4,19 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using SdApi = GaRyan2.SchedulesDirect;
+using epg123_gui.ViewModels;
 
 namespace epg123_gui
 {
     public partial class frmLineups : Form
     {
         private readonly LineupResponse _oldLineups;       // existing lineup
+        private readonly LineupsViewModel _viewModel = new LineupsViewModel();
 
         public HashSet<string> NewLineups = new HashSet<string>();
-        public bool Cancel = true;
+        public bool Cancel
+        {
+            get => _viewModel.CancelOperation;
+            private set => _viewModel.CancelOperation = value;
+        }
 
         public frmLineups()
         {
             InitializeComponent();
+            DataContext = _viewModel;
 
             // get current lineups
             _oldLineups = SdApi.GetSubscribedLineups();
