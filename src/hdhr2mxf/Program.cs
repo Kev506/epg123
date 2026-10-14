@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace hdhr2mxf
 {
@@ -21,7 +22,7 @@ namespace hdhr2mxf
         private static bool _noLogos;
         private static List<string> _ipAddresses;
 
-        private static int Main(string[] args)
+        private static async Task<int> Main(string[] args)
         {
             var error = false;
             var showHelp = false;
@@ -93,7 +94,7 @@ namespace hdhr2mxf
 
             var success = Build();
             if (!success || !import) return success ? 0 : 0xDEAD;
-            success = WmcStore.ImportMxfFile(Helper.Hdhr2MxfMxfPath) && WmcStore.ReindexDatabase();
+            success = await WmcStore.ImportMxfFile(Helper.Hdhr2MxfMxfPath) && WmcStore.ReindexDatabase();
             return success ? 0 : 0xDEAD;
         }
 

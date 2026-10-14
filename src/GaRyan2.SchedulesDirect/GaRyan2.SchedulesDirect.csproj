@@ -20,7 +20,7 @@
     <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Net.Http;
 using Api = GaRyan2.SchedulesDirect;
+using System.Threading.Tasks;
 
 namespace epg123.sdJson2mxf
 {
@@ -295,12 +296,12 @@ namespace epg123.sdJson2mxf
             StationLogosDownloadComplete = true;
         }
 
-        private static void BackgroundDownloader_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private static async void BackgroundDownloader_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             foreach (var serviceLogo in StationLogosToDownload)
             {
                 var logoPath = serviceLogo.Value[0];
-                if ((File.Exists(logoPath) || DownloadSdLogo(serviceLogo.Value[1], logoPath)) && string.IsNullOrEmpty(serviceLogo.Key.LogoImage))
+                if ((File.Exists(logoPath) || await DownloadSdLogo(serviceLogo.Value[1], logoPath)) && string.IsNullOrEmpty(serviceLogo.Key.LogoImage))
                 {
                     serviceLogo.Key.mxfGuideImage = mxf.FindOrCreateGuideImage(Helper.Standalone ? $"file://{logoPath}" : $"http://{HostAddress}:{Helper.TcpUdpPort}/logos/{Path.GetFileName(logoPath)}",
                         Helper.Standalone ? GetStringEncodedImage(logoPath) : null);
@@ -320,12 +321,12 @@ namespace epg123.sdJson2mxf
             }
         }
 
-        private static bool DownloadSdLogo(string uri, string filepath)
+        private static async Task<bool> DownloadSdLogo(string uri, string filepath)
         {
             try
             {
                 using var httpClient = new HttpClient();
-                var bytes = httpClient.GetByteArrayAsync(uri).GetAwaiter().GetResult();
+                var bytes = await httpClient.GetByteArrayAsync(uri);
                 using (var stream = new MemoryStream(bytes))
                 {
                     // crop and save image

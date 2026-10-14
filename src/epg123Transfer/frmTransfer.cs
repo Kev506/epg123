@@ -518,7 +518,7 @@ namespace epg123Transfer
 
         #endregion
 
-        private void btnTransfer_Click(object sender, EventArgs e)
+        private async void btnTransfer_Click(object sender, EventArgs e)
         {
             if (lvMxfRecordings.Items.Count <= 0) return;
 
@@ -580,7 +580,7 @@ namespace epg123Transfer
                 Helper.WriteXmlFile(_oldRecordings, mxfFilepath);
 
                 // import file and run pvr indexing
-                if (WmcStore.ImportMxfFile(mxfFilepath))
+                if (await WmcStore.ImportMxfFile(mxfFilepath))
                     WmcStore.ReindexPvrSchedule();
             }
             catch (Exception ex)

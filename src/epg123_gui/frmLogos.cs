@@ -216,7 +216,7 @@ namespace epg123_gui
             }
         }
 
-        private void pictureBox_DragDrop(object sender, DragEventArgs e)
+        private async void pictureBox_DragDrop(object sender, DragEventArgs e)
         {
             Bitmap imgBitmap = null;
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
@@ -235,7 +235,7 @@ namespace epg123_gui
                 try
                 {
                     using (var client = new HttpClient())
-                    using (var stream = new MemoryStream(client.GetByteArrayAsync(link).GetAwaiter().GetResult()))
+                    using (var stream = new MemoryStream(await client.GetByteArrayAsync(link)))
                     {
                         imgBitmap = Image.FromStream(stream) as Bitmap;
                     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace epg123_gui
@@ -38,7 +39,7 @@ namespace epg123_gui
                     if (ListView?.InvokeRequired ?? false) ListView?.Invoke(new Action(delegate { ListView?.Invalidate(Bounds); }));
                     else ListView?.Invalidate(Bounds);
                 }
-                catch { }
+                catch (ThreadInterruptedException) { }
             };
         }
     }

@@ -532,7 +532,7 @@ namespace epg123Client
         {
             UpdateStatusText("Increasing tuner limits ...");
             Logger.WriteVerbose("Increasing tuner limits ...");
-            WmcStore.SetWmcTunerLimits(count);
+            WmcStore.SetWmcTunerLimitsAsync(count);
         }
 
         private void UpdateSatelliteTransponders()

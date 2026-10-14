@@ -1390,12 +1390,12 @@ namespace epg123Client
             }
         }
 
-        private void btnTunerLimit_Click(object sender, EventArgs e)
+        private async void btnTunerLimit_Click(object sender, EventArgs e)
         {
             // activate the wait cursor for the tweak form
             UseWaitCursor = true;
 
-            if (WmcStore.SetWmcTunerLimits(TunerLimit))
+            if (await WmcStore.SetWmcTunerLimitsAsync(TunerLimit))
             {
                 MessageBox.Show("The tuner limit increase has been successfully applied.", "Tuner Limit Tweak", MessageBoxButtons.OK);
             }

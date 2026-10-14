@@ -36,9 +36,9 @@ namespace epg123Client
             label1.Text = "";
         }
 
-        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private async void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Success = WmcStore.ImportMxfFile((string)e.Argument, true);
+            Success = await WmcStore.ImportMxfFile((string)e.Argument, true);
             statusLogo.StatusImage((string)e.Argument);
         }
 

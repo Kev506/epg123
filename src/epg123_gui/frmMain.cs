@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -179,7 +180,7 @@ namespace epg123_gui
             }
         }
 
-        private void LoadConfigurationFile(bool reload)
+        private async void LoadConfigurationFile(bool reload)
         {
             // start service if needed
             if (Helper.InstallMethod <= Helper.Installation.SERVER) UdpFunctions.StartService();
@@ -217,7 +218,7 @@ namespace epg123_gui
                 try
                 {
                     // download config file
-                    var cfg = DownloadStringFromUrl(Settings.Default.CfgLocation);
+                    var cfg = await DownloadStringFromUrl(Settings.Default.CfgLocation);
                     var serializer = new XmlSerializer(typeof(epgConfig));
                     var reader = new StringReader(cfg);
                     Config = (epgConfig)serializer.Deserialize(reader);
@@ -666,12 +667,14 @@ namespace epg123_gui
             {
                 try
                 {
-                    Parallel.For(0, _allStations.Count, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 2 }, i =>
+                    Parallel.For(0, _allStations.Count, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 2 }, async i =>
                     {
-                        _allStations.ElementAt(i).Value.ServiceLogo = GetServiceBitmap(_allStations.ElementAt(i).Value.Station);
+                        _allStations.ElementAt(i).Value.ServiceLogo = await GetServiceBitmapAsync(_allStations.ElementAt(i).Value.Station);
                     });
                 }
-                catch { }
+                catch (ThreadInterruptedException e) {
+                    Console.WriteLine("Thread interrupted." + e.Message);
+                }
             };
             starter += () =>
             {
@@ -681,7 +684,7 @@ namespace epg123_gui
             _logoThread.Start();
         }
 
-        private Bitmap GetServiceBitmap(LineupStation station)
+        private async Task<Bitmap> GetServiceBitmapAsync(LineupStation station)
         {
             if (!Config.IncludeSdLogos) return null;
 
@@ -699,7 +702,7 @@ namespace epg123_gui
                 path = $"{_BaseServerAddress}logos/{filename}";
                 if (!_Bitmaps.ContainsKey(filename))
                 {
-                    using (var ms = new MemoryStream(DownloadDataFromUrl(path)))
+                    using (var ms = new MemoryStream(buffer: await DownloadDataFromUrl(path)))
                     {
                         _Bitmaps.TryAdd(filename, ResizeLogoBitmap(new Bitmap(ms), true));
                     }
@@ -731,7 +734,7 @@ namespace epg123_gui
                 path = $"{_BaseServerAddress}logos/{filename}";
                 if (!_Bitmaps.ContainsKey(filename))
                 {
-                    using (var ms = new MemoryStream(DownloadDataFromUrl(path)))
+                    using (var ms = new MemoryStream(buffer: await DownloadDataFromUrl(path)))
                     {
                         _Bitmaps.TryAdd(filename, ResizeLogoBitmap(new Bitmap(ms), false));
                     }
@@ -748,7 +751,7 @@ namespace epg123_gui
 
             try
             {
-                using (var ms = new MemoryStream(DownloadDataFromUrl(path)))
+                using (var ms = new MemoryStream(buffer: await DownloadDataFromUrl(path)))
                 {
                     _Bitmaps.TryAdd(path, ResizeLogoBitmap(Helper.CropAndResizeImage(new Bitmap(ms))));
                     return AddLogoBackground(_Bitmaps[path]);
@@ -814,7 +817,8 @@ namespace epg123_gui
             byte[] textBytes;
             try
             {
-                textBytes = Encoding.ASCII.GetBytes(new CultureInfo(text).ThreeLetterISOLanguageName);
+                var isoLanguageName = new CultureInfo(text).ThreeLetterISOLanguageName;
+                textBytes = Encoding.ASCII.GetBytes(!string.IsNullOrEmpty(isoLanguageName) ? isoLanguageName : text);
             }
             catch
             {
@@ -825,9 +829,10 @@ namespace epg123_gui
             const int bitWeight = 10;
             const int colorBase = 0x61;
             if (textBytes.Length < 3) { Array.Resize(ref textBytes, 3); textBytes[2] = textBytes[0]; }
-            var backColor = Color.FromArgb((textBytes[0] - colorBase) * bitWeight,
-                                           (textBytes[1] - colorBase) * bitWeight,
-                                           (textBytes[2] - colorBase) * bitWeight);
+            var red = Math.Max(0, Math.Min(255, (textBytes[0] - colorBase) * bitWeight));
+            var green = Math.Max(0, Math.Min(255, (textBytes[1] - colorBase) * bitWeight));
+            var blue = Math.Max(0, Math.Min(255, (textBytes[2] - colorBase) * bitWeight));
+            var backColor = Color.FromArgb(red, green, blue);
 
             // determine best textColor
             const int threshold = 140;
@@ -1038,11 +1043,11 @@ namespace epg123_gui
                 var item = lvLineupChannels.SelectedItems[0] as MemberListViewItem;
                 var station = item.Station;
                 var frm = new frmLogos(station.Station);
-                frm.FormClosed += (o, args) =>
+                frm.FormClosed += async (o, args) =>
                 {
                     if (frm.LogoChanged) _RemoteCustomLogos = SdApi.GetCustomLogosFromServer($"{_BaseServerAddress}logos/custom");
                     lock (_bitmapLock) _Bitmaps.TryRemove($"{station.Station.Callsign}_c.png", out _);
-                    _allStations[station.StationId].ServiceLogo = GetServiceBitmap(station.Station);
+                    _allStations[station.StationId].ServiceLogo = await GetServiceBitmapAsync(station.Station);
                 };
                 frm.Show(this);
             }
@@ -1474,7 +1479,7 @@ namespace epg123_gui
             }
         }
 
-        private void txtBaseApi_Validating(object sender, CancelEventArgs e)
+        private async void txtBaseApi_Validating(object sender, CancelEventArgs e)
         {
             if (txtBaseApi.Text == _originalConfig.BaseApiUrl) return;
             if (string.IsNullOrEmpty(txtBaseApi.Text)) { txtBaseApi.Text = _originalConfig.BaseApiUrl; return; }
@@ -1484,7 +1489,7 @@ namespace epg123_gui
                 e.Cancel = true;
                 return;
             }
-            if (!TryHttpAddress(txtBaseApi.Text))
+            if (!await TryHttpAddress(txtBaseApi.Text))
             {
                 MessageBox.Show("Not a valid Schedules Direct address.", "URL Incorrect");
                 txtBaseApi.Text = _originalConfig.BaseApiUrl;
@@ -1492,7 +1497,7 @@ namespace epg123_gui
             }
         }
 
-        private void txtBaseArtwork_Validating(object sender, CancelEventArgs e)
+        private async void txtBaseArtwork_Validating(object sender, CancelEventArgs e)
         {
             if (txtBaseArtwork.Text == _originalConfig.BaseArtworkUrl) return;
             if (string.IsNullOrEmpty(txtBaseArtwork.Text)) { txtBaseArtwork.Text = _originalConfig.BaseArtworkUrl; return; }
@@ -1502,7 +1507,7 @@ namespace epg123_gui
                 e.Cancel = true;
                 return;
             }
-            if (!TryHttpAddress(txtBaseArtwork.Text))
+            if (!await TryHttpAddress(txtBaseArtwork.Text))
             {
                 MessageBox.Show("Not a valid Schedules Direct address.", "URL Incorrect");
                 txtBaseArtwork.Text = _originalConfig.BaseArtworkUrl;
@@ -1510,29 +1515,45 @@ namespace epg123_gui
             }
         }
 
-        private static byte[] DownloadDataFromUrl(string url)
+        private static async Task<byte[]> DownloadDataFromUrl(string url)
         {
             using (var client = new HttpClient())
             {
-                return client.GetByteArrayAsync(url).GetAwaiter().GetResult();
+                try
+                {
+                    return await client.GetByteArrayAsync(url);
+                }
+                catch (ThreadInterruptedException ex)
+                {
+                    Logger.WriteError($"Thread interrupted. {ex.Message}");
+                    return null;
+                }
             }
         }
 
-        private static string DownloadStringFromUrl(string url)
+        private static async Task<string> DownloadStringFromUrl(string url)
         {
             using (var client = new HttpClient())
             {
-                return client.GetStringAsync(url).GetAwaiter().GetResult();
+                try
+                {
+                    return await client.GetStringAsync(url);
+                }
+                catch (ThreadInterruptedException ex)
+                {
+                    Logger.WriteError($"Thread interrupted. {ex.Message}");
+                    return null;
+                }
             }
         }
 
-        private bool TryHttpAddress(string url)
+        private async Task<bool> TryHttpAddress(string url)
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    var response = client.GetAsync($"{url}available").GetAwaiter().GetResult();
+                    var response = await client.GetAsync($"{url}available");
                     return response.IsSuccessStatusCode;
                 }
             }

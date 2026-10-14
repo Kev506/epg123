@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace epg123Client
@@ -171,7 +172,7 @@ namespace epg123Client
         private const int MaximumRecordingWaitHours = 23;
 
         [STAThread]
-        private static int Main(string[] args)
+        private static async Task<int> Main(string[] args)
         {
             // setup catch to fatal program crash
             AppDomain.CurrentDomain.UnhandledException += MyUnhandledException;
@@ -445,7 +446,7 @@ namespace epg123Client
                         WmcStore.Close();
 
                         // import mxf file
-                        if (!ImportMxfFile(filename))
+                        if (!await ImportMxfFileAsync(filename))
                         {
                             Logger.WriteError("Failed to import .mxf file. Exiting.");
                             goto CompleteImport;
@@ -555,7 +556,7 @@ namespace epg123Client
             } while (true);
         }
 
-        public static bool ImportMxfFile(string file)
+        public static async Task<bool> ImportMxfFileAsync(string file)
         {
             //verify tuners are setup in WMC prior to importing
             var deviceCount = 0;
@@ -577,7 +578,7 @@ namespace epg123Client
             }
 
             // do the import with or without progress form
-            if (!showProgress) return WmcStore.ImportMxfFile(file);
+            if (!showProgress) return await WmcStore.ImportMxfFile(file);
             var frm = new frmImport(file, false);
             frm.ShowDialog();
             return frm.Success;

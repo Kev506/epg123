@@ -8,13 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace epg123Client
 {
     internal class SatMxf
     {
-        public static bool UpdateDvbsTransponders(bool ignoreDefault)
+        public static async Task<bool> UpdateDvbsTransponders(bool ignoreDefault)
         {
             var ret = false;
             var mxfPath = Helper.TransponderMxfPath;
@@ -72,7 +73,7 @@ namespace epg123Client
 
             // import the mxf file with new satellite transponders
             ImportAndLock:
-                ret = WmcStore.ImportMxfFile(mxfPath);
+                ret = await WmcStore.ImportMxfFile(mxfPath);
                 if (WmcStore.Open())
                 {
                     var uid = WmcStore.WmcObjectStore.UIds["!DvbsDataSet"];
