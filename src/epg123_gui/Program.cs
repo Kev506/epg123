@@ -27,6 +27,7 @@ namespace epg123_gui
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetColorMode(SystemColorMode.System);
 
             // copy over window size and location from previous version if needed
             if (Settings.Default.UpgradeRequired)
