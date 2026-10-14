@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Windows.Forms;
 
 namespace epg123_gui
@@ -216,7 +216,7 @@ namespace epg123_gui
             }
         }
 
-        private void pictureBox_DragDrop(object sender, DragEventArgs e)
+        private async void pictureBox_DragDrop(object sender, DragEventArgs e)
         {
             Bitmap imgBitmap = null;
             if (e.Data.GetDataPresent(DataFormats.Bitmap))
@@ -234,7 +234,8 @@ namespace epg123_gui
 
                 try
                 {
-                    using (var stream = new MemoryStream(new WebClient().DownloadData(link)))
+                    using (var client = new HttpClient())
+                    using (var stream = new MemoryStream(await client.GetByteArrayAsync(link)))
                     {
                         imgBitmap = Image.FromStream(stream) as Bitmap;
                     }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using api = GaRyan2.SchedulesDirect;
+using Api = GaRyan2.SchedulesDirect;
 
 namespace epg123.sdJson2mxf
 {
@@ -29,13 +29,13 @@ namespace epg123.sdJson2mxf
             var userAgent = $"EPG123/{Helper.Epg123Version}";
             Github.Initialize(userAgent, "epg123");
             Tmdb.Initialize(userAgent, config.ArtworkSize);
-            api.Initialize(userAgent, config.BaseApiUrl, config.BaseArtworkUrl, config.UseDebug);
+            Api.Initialize(userAgent, config.BaseApiUrl, config.BaseArtworkUrl, config.UseDebug);
 
             var startTime = DateTime.UtcNow;
             Logger.WriteVerbose($"DaysToDownload: {config.DaysToDownload} , TheTVDBNumbers : {config.TheTvdbNumbers} , PrefixEpisodeTitle: {config.PrefixEpisodeTitle} , PrefixEpisodeDescription : {config.PrefixEpisodeDescription} , AppendEpisodeDesc: {config.AppendEpisodeDesc} , OADOverride : {config.OadOverride} , SeasonEventImages : {config.SeasonEventImages} , IncludeSDLogos : {config.IncludeSdLogos} , AutoAddNew: {config.AutoAddNew} , CreateXmltv: {config.CreateXmltv}");
 
             // login to Schedules Direct and check server status
-            if (!api.GetToken(config.UserAccount.LoginName, config.UserAccount.PasswordHash))
+            if (!Api.GetToken(config.UserAccount.LoginName, config.UserAccount.PasswordHash))
             {
                 Logger.WriteError("Failed to login to Schedules Direct. Aborting update.");
                 return;
@@ -43,7 +43,7 @@ namespace epg123.sdJson2mxf
             else
             {
                 // check server status
-                var susr = api.GetUserStatus();
+                var susr = Api.GetUserStatus();
                 if (susr != null && susr.SystemStatus[0].Status.ToLower().Equals("offline"))
                 {
                     Logger.WriteError("Schedules Direct server is offline. Aborting update.");

@@ -1,4 +1,4 @@
-﻿using GaRyan2.Utilities;
+using GaRyan2.Utilities;
 using GaRyan2.WmcUtilities;
 using Microsoft.Win32;
 using System;
@@ -52,7 +52,7 @@ namespace epg123Client
         #endregion
 
         // enumeration of resources in Microsoft.MediaCenter.Shell.dll
-        private enum shellresource
+        private enum ShellResource
         {
             EPG_MCML,
             EPGCELLS_MCML,
@@ -64,7 +64,7 @@ namespace epg123Client
             MAX
         }
 
-        private readonly XDocument[] _shellDllResources = new XDocument[(int)shellresource.MAX];
+        private readonly XDocument[] _shellDllResources = new XDocument[(int)ShellResource.MAX];
 
         // filepaths
         private readonly string _shellEhomePath = Environment.GetEnvironmentVariable("WINDIR") + @"\ehome\Microsoft.MediaCenter.Shell.dll";
@@ -279,7 +279,7 @@ namespace epg123Client
         private bool GetGuideConfigurations()
         {
             // get cell font size
-            var font1 = _shellDllResources[(int)shellresource.EPGCELLS_MCML]
+            var font1 = _shellDllResources[(int)ShellResource.EPGCELLS_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "Font")
                 .Where(arg => arg.Attribute("Name") != null)
@@ -290,7 +290,7 @@ namespace epg123Client
             }
 
             // get main guide rows and mini guide rows
-            var actions = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var actions = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Set")
                 .Where(arg => arg.Attribute("Target") != null)
                 .Where(arg => arg.Attribute("Target").Value == "[Table.VisibleRowCapacity]")
@@ -352,7 +352,7 @@ namespace epg123Client
             }
 
             // get guide visible columns
-            var columns = _shellDllResources[(int)shellresource.EPG_MCML]
+            var columns = _shellDllResources[(int)ShellResource.EPG_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "Condition")
                 .Where(arg => arg.Attribute("Target") != null)
@@ -363,7 +363,7 @@ namespace epg123Client
             }
 
             // determine channel logo size
-            var channelLogo = _shellDllResources[(int)shellresource.EPGCOMMON_MCML]
+            var channelLogo = _shellDllResources[(int)ShellResource.EPGCOMMON_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "UI")
                 .Where(arg => arg.Attribute("Name") != null)
@@ -382,7 +382,7 @@ namespace epg123Client
             }
 
             // determine if channel number is hidden and if animations are disabled
-            var epgChannelCell = _shellDllResources[(int)shellresource.EPGCELLS_MCML]
+            var epgChannelCell = _shellDllResources[(int)ShellResource.EPGCELLS_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "UI")
                 .Where(arg => arg.Attribute("Name") != null)
@@ -434,7 +434,7 @@ namespace epg123Client
             }
 
             // determine if callsign is overridden with channel name
-            var callsigns = _shellDllResources[(int)shellresource.EPGCELLS_MCML].Descendants()
+            var callsigns = _shellDllResources[(int)ShellResource.EPGCELLS_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Default")
                 .Where(arg => arg.Attribute("Target") != null)
                 .Where(arg => arg.Attribute("Target").Value == "[Callsign.Content]");
@@ -445,7 +445,7 @@ namespace epg123Client
             }
 
             // determine if expanded epg is active
-            var rule1 = _shellDllResources[(int)shellresource.EPGCELLS_MCML]
+            var rule1 = _shellDllResources[(int)ShellResource.EPGCELLS_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "Equality")
                 .Where(arg => arg.Attribute("Source").Value == "[Cell.Episode]")
@@ -454,7 +454,7 @@ namespace epg123Client
             cbExpandedEpg.Checked = rule1 != null;
 
             // determine if expanded movie is active
-            var rule2 = _shellDllResources[(int)shellresource.EPGCELLS_MCML]
+            var rule2 = _shellDllResources[(int)ShellResource.EPGCELLS_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "Equality")
                 .Where(arg => arg.Attribute("Source").Value == "[Cell.MovieYear]")
@@ -463,7 +463,7 @@ namespace epg123Client
             cbExpandedMovie.Checked = rule2 != null;
 
             // determine if expanded clock is active
-            var clock = _shellDllResources[(int)shellresource.CLOCK_MCML].Descendants()
+            var clock = _shellDllResources[(int)ShellResource.CLOCK_MCML].Descendants()
                 .Single(arg => arg.Name.LocalName == "DateTimeFormats");
             cbClock.Checked = clock.Attribute("DateTimeFormats").Value.Contains("AbbreviatedLongDate");
 
@@ -483,7 +483,7 @@ namespace epg123Client
         private void SetEpgChannelCellProperties()
         {
             var logoHeight = trackLogoSize.Value == 0 ? SmallLogoHeight : trackLogoSize.Value == 1 ? MediumLogoHeight : LargeLogoHeight;
-            var uiElements = _shellDllResources[(int)shellresource.EPGCELLS_MCML].Descendants()
+            var uiElements = _shellDllResources[(int)ShellResource.EPGCELLS_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "UI")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name").Value == "EpgChannelCell");
 
@@ -607,7 +607,7 @@ namespace epg123Client
             }
 
             // set logo maximum size
-            var logoElement = _shellDllResources[(int)shellresource.EPGCOMMON_MCML].Descendants()
+            var logoElement = _shellDllResources[(int)ShellResource.EPGCOMMON_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "UI" && arg.Attribute("Name").Value == "ChannelLogo");
             logoElement.Descendants().Single(arg => arg.Name.LocalName == "Size")
                 .SetAttributeValue("Size", $"{3 * logoHeight},{logoHeight}"); // default is "75,35"
@@ -615,7 +615,7 @@ namespace epg123Client
             // replace callsign with channel name
             if (cbChannelName.Checked)
             {
-                var callsigns = _shellDllResources[(int)shellresource.EPGCELLS_MCML].Descendants()
+                var callsigns = _shellDllResources[(int)ShellResource.EPGCELLS_MCML].Descendants()
                     .Where(arg => arg.Name.LocalName == "Default")
                     .Where(arg => arg.Attribute("Target") != null)
                     .Where(arg => arg.Attribute("Target").Value == "[Callsign.Content]");
@@ -635,24 +635,24 @@ namespace epg123Client
         private void SetGuidePageDateTimeFilterFonts()
         {
             // set date font above channel cells
-            var date = _shellDllResources[(int)shellresource.EPGCOMMON_MCML]
+            var date = _shellDllResources[(int)ShellResource.EPGCOMMON_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "Font")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "DateFont");
             date.SetAttributeValue("FontSize", $"{ScaleNumber(16)}"); // default is 16
 
-            var date2 = _shellDllResources[(int)shellresource.EPGCOMMON_MCML].Descendants()
+            var date2 = _shellDllResources[(int)ShellResource.EPGCOMMON_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Text")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "Date");
             date2.SetAttributeValue("Margins", $"{ScaleNumber(14)},0,{ScaleNumber(5)},0"); // default is "14,0,5,0"
 
             // set time font above guide cells
-            var time = _shellDllResources[(int)shellresource.EPGCELLS_MCML].Descendants()
+            var time = _shellDllResources[(int)ShellResource.EPGCELLS_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Font")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "TimeFont");
             time.SetAttributeValue("FontSize", $"{ScaleNumber(16)}"); // default is 16
 
-            var time2 = _shellDllResources[(int)shellresource.EPGCELLS_MCML].Descendants()
+            var time2 = _shellDllResources[(int)ShellResource.EPGCELLS_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "UI")
                 .Where(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "EpgTimeCell")
                 .Descendants()
@@ -661,7 +661,7 @@ namespace epg123Client
 
             // set title font for guide page
             var maxFont = Math.Min((int)((0.7 * MainTableTop - 18 + (16 - ScaleNumber(16)) * 1.33) / 1.33), 48);
-            var title = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var title = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Font")
                 .Where(arg => arg.Parent != null && arg.Parent.Name.LocalName == "Font")
                 .Where(arg => arg.Parent.Parent != null && arg.Parent.Parent.Name.LocalName == "StaticText")
@@ -669,25 +669,25 @@ namespace epg123Client
             title.SetAttributeValue("FontSize", $"{maxFont}"); // default is 48
 
             // set filter button text font and margins
-            var button = _shellDllResources[(int)shellresource.FILTERBUTTON_MCML].Descendants()
+            var button = _shellDllResources[(int)ShellResource.FILTERBUTTON_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Font")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "Font");
             button.SetAttributeValue("FontSize", $"{ScaleNumber(16)}"); // default is 16
 
-            var buttonText = _shellDllResources[(int)shellresource.FILTERBUTTON_MCML].Descendants()
+            var buttonText = _shellDllResources[(int)ShellResource.FILTERBUTTON_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Panel")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "LabelPanel");
             buttonText.SetAttributeValue("Margins", "0,0,0,0"); // default is "0,8,0,0"
 
             // set chevron margins
-            var chevron = _shellDllResources[(int)shellresource.FILTERBUTTON_MCML].Descendants()
+            var chevron = _shellDllResources[(int)ShellResource.FILTERBUTTON_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Graphic")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "Chevron");
             chevron.SetAttributeValue("Margins", $"14,0,{ScaleNumber(36)},0"); // default is "14,0,36,0"
             chevron.SetAttributeValue("MaintainAspectRatio", "true"); // default is false (not present)
 
             // set filter list text font
-            var list = _shellDllResources[(int)shellresource.FILTERLISTBOX_MCML].Descendants()
+            var list = _shellDllResources[(int)ShellResource.FILTERLISTBOX_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "UI")
                 .Where(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "FilteredGuide").Descendants()
                 .Where(arg => arg.Name.LocalName == "Properties").Elements();
@@ -723,12 +723,12 @@ namespace epg123Client
             }
 
             // set filter menu width
-            var menu = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var menu = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "GuideFilterListBox").Descendants()
                 .Single(arg => arg.Name.LocalName == "FormLayoutInput");
             menu.SetAttributeValue("Right", $"FilterButton,1,{ScaleNumber(274)}"); // default is "FilterButton,1,274"
 
-            var panel = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var panel = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Panel")
                 .Where(arg => arg.Attribute("Name") != null && arg.Attribute("Name").Value == "ContentPanel").Descendants()
                 .First(arg => arg.Name.LocalName == "FormLayoutInput");
@@ -737,7 +737,7 @@ namespace epg123Client
             // set date/time format
             if (cbClock.Checked)
             {
-                var clock = _shellDllResources[(int)shellresource.CLOCK_MCML].Descendants()
+                var clock = _shellDllResources[(int)ShellResource.CLOCK_MCML].Descendants()
                     .Single(arg => arg.Name.LocalName == "DateTimeFormats");
                 clock.SetAttributeValue("DateTimeFormats", "AbbreviatedLongDate,ShortTime"); // default is "ShortTime"
             }
@@ -745,7 +745,7 @@ namespace epg123Client
 
         private void SetTableAndDetailsViewProperties()
         {
-            var epgPage = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var epgPage = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "UI")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "EpgPage");
 
@@ -847,7 +847,7 @@ namespace epg123Client
             }
 
             // set the scroll hotspot size and locations
-            var scroll = _shellDllResources[(int)shellresource.TABLE_MCML].Descendants()
+            var scroll = _shellDllResources[(int)ShellResource.TABLE_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "TableAxisAutoScrollRegion")
                 .Where(arg => arg.Attribute("Name") != null);
             foreach (var e in scroll)
@@ -891,7 +891,7 @@ namespace epg123Client
 
         private void SetEpgCellProperties()
         {
-            var epgShow = _shellDllResources[(int)shellresource.EPGCELLS_MCML].Descendants()
+            var epgShow = _shellDllResources[(int)ShellResource.EPGCELLS_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "UI")
                 .Single(arg => arg.Attribute("Name") != null && arg.Attribute("Name")?.Value == "EpgShowCell");
 
@@ -974,7 +974,7 @@ namespace epg123Client
             // set expanded epg
             if (cbExpandedEpg.Checked)
             {
-                var rule = _shellDllResources[(int)shellresource.EPGCELLS_MCML]
+                var rule = _shellDllResources[(int)ShellResource.EPGCELLS_MCML]
                     .Descendants()
                     .Where(arg => arg.Name.LocalName == "Equality")
                     .Single(arg => arg.Attribute("Value")?.Value == "[Cell.Episode]");
@@ -984,7 +984,7 @@ namespace epg123Client
             // set expanded movie
             if (cbExpandedMovie.Checked)
             {
-                var rule = _shellDllResources[(int)shellresource.EPGCELLS_MCML]
+                var rule = _shellDllResources[(int)ShellResource.EPGCELLS_MCML]
                     .Descendants()
                     .Where(arg => arg.Name.LocalName == "Equality")
                     .Single(arg => arg.Attribute("Value")?.Value == "[Cell.MovieYear]");
@@ -995,13 +995,13 @@ namespace epg123Client
         private void SetTableAndDetailGeometries()
         {
             // set guide visible columns
-            var columns = _shellDllResources[(int)shellresource.EPG_MCML]
+            var columns = _shellDllResources[(int)ShellResource.EPG_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "Condition") // IsWidescreen
                 .Where(arg => arg.Attribute("Target") != null)
                 .Single(arg => arg.Attribute("Target")?.Value == "[Table.VisibleColumnCapacity]");
             columns?.SetAttributeValue("Value", trackMinutes.Value.ToString()); // default is 120
-            columns = _shellDllResources[(int)shellresource.EPG_MCML]
+            columns = _shellDllResources[(int)ShellResource.EPG_MCML]
                 .Descendants()
                 .Where(arg => arg.Name.LocalName == "Default")
                 .Where(arg => arg.Attribute("Target") != null)
@@ -1030,7 +1030,7 @@ namespace epg123Client
             }
 
             // set program / movie details placement
-            var inputs = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var inputs = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "FormLayoutInput" || arg.Name.LocalName == "Font")
                 .Where(arg => arg.Attribute("Name") != null);
             if (inputs.Any())
@@ -1073,7 +1073,7 @@ namespace epg123Client
             }
 
             // add channel details bottom line
-            var entry = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var entry = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Single(arg => arg.Name.LocalName == "ScheduleEntryDetailsView");
             if (cbHideNumber.Checked)
             {
@@ -1086,7 +1086,7 @@ namespace epg123Client
             }
 
             // set channel details font size
-            var fonts = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var fonts = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Font")
                 .Where(arg => arg.Attribute("Name") != null);
             foreach (var font in fonts)
@@ -1103,7 +1103,7 @@ namespace epg123Client
             }
 
             // set channel details time/title offset positions
-            var anchors = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var anchors = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg =>
                     arg.Name.LocalName == "UI" && arg.Attribute("Name") != null &&
                     arg.Attribute("Name").Value == "ChannelDetailsView").Descendants()
@@ -1115,13 +1115,13 @@ namespace epg123Client
             }
 
             // set clock position
-            var clock = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var clock = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "Clock").Descendants()
                 .Single(arg => arg.Name.LocalName == "FormLayoutInput");
             clock.SetAttributeValue("Right", $"Parent,1,-{FilterButtonWidth + 3}");
 
             // set brandlogo position
-            var brand = _shellDllResources[(int)shellresource.EPG_MCML].Descendants()
+            var brand = _shellDllResources[(int)ShellResource.EPG_MCML].Descendants()
                 .Where(arg => arg.Name.LocalName == "BrandLogo").Descendants()
                 .Single(arg => arg.Name.LocalName == "FormLayoutInput");
             brand.SetAttributeValue("Right", $"Parent,1,-{FilterButtonWidth + 3}");
@@ -1143,9 +1143,9 @@ namespace epg123Client
 
                 // update resources of the shell dll in the temp folder
                 var updateSuccess = true;
-                for (var i = 0; i < (int)shellresource.MAX; ++i)
+                for (var i = 0; i < (int)ShellResource.MAX; ++i)
                 {
-                    updateSuccess &= ReplaceFileResource(_shellTempPath, ((shellresource)i).ToString().Replace("_", "."), _shellDllResources[i]);
+                    updateSuccess &= ReplaceFileResource(_shellTempPath, ((ShellResource)i).ToString().Replace("_", "."), _shellDllResources[i]);
                 }
 
                 if (updateSuccess)
@@ -1216,7 +1216,7 @@ namespace epg123Client
         {
             for (var i = 0; i < _shellDllResources.Length; ++i)
             {
-                _shellDllResources[i] = GetFileResource(_shellEhomePath, ((shellresource)i).ToString().Replace("_", "."));
+                _shellDllResources[i] = GetFileResource(_shellEhomePath, ((ShellResource)i).ToString().Replace("_", "."));
             }
         }
 
@@ -1317,9 +1317,9 @@ namespace epg123Client
             FormInitialized = false;
 
             // populate xdocuments with default files
-            for (var i = 0; i < (int)shellresource.MAX; ++i)
+            for (var i = 0; i < (int)ShellResource.MAX; ++i)
             {
-                _shellDllResources[i] = GetFileResource("epg123Client.WmcTweak." + ((shellresource)i).ToString().Replace("_", "."));
+                _shellDllResources[i] = GetFileResource("epg123Client.WmcTweak." + ((ShellResource)i).ToString().Replace("_", "."));
             }
 
             // update xdocuments
@@ -1390,12 +1390,12 @@ namespace epg123Client
             }
         }
 
-        private void btnTunerLimit_Click(object sender, EventArgs e)
+        private async void btnTunerLimit_Click(object sender, EventArgs e)
         {
             // activate the wait cursor for the tweak form
             UseWaitCursor = true;
 
-            if (WmcStore.SetWmcTunerLimits(TunerLimit))
+            if (await WmcStore.SetWmcTunerLimitsAsync(TunerLimit))
             {
                 MessageBox.Show("The tuner limit increase has been successfully applied.", "Tuner Limit Tweak", MessageBoxButtons.OK);
             }

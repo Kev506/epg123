@@ -1,0 +1,14 @@
+{
+  "scenarioId": "dotnet-version-upgrade",
+  "operationId": "7427f321-2847-4744-91c1-2b68dbb6e86f",
+  "description": "Upgrade .NET projects to newer .NET versions, including guidance on current release status, support lifecycle (LTS/STS), and recommended upgrade targets.",
+  "startTime": "2026-10-13T15:47:41.5390644Z",
+  "lastUpdateTime": "2026-10-13T15:53:23.9380641Z",
+  "properties": {
+    "UpgradeTargetFramework": "net10.0",
+    "taskStates": {
+      "01-upgrade-logviewer-to-net10": "Completed"
+    }
+  },
+  "folderPath": ""
+}

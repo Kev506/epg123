@@ -6,12 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
-using System.Web;
 
 namespace epg123Server
 {
+    [SupportedOSPlatform("windows")]
     class ConfigServer
     {
         private readonly HttpListener _listener;
@@ -95,7 +96,7 @@ namespace epg123Server
                             {
                                 var kvPair = param.Split('=');
                                 var key = kvPair[0];
-                                var value = HttpUtility.UrlDecode(kvPair[1]);
+                                var value = WebUtility.UrlDecode(kvPair[1]);
                                 parameters.Add(key, value);
                             }
                             SchedulesDirect.GetToken(parameters["username"], parameters["password"]);

@@ -247,7 +247,7 @@ namespace epgTray
         {
             var pipeSecurity = new PipeSecurity();
             pipeSecurity.AddAccessRule(new PipeAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), PipeAccessRights.FullControl, AccessControlType.Allow));
-            var server = new NamedPipeServerStream("Epg123StatusPipe", PipeDirection.InOut, -1, PipeTransmissionMode.Message, PipeOptions.None, 0, 0, pipeSecurity);
+            var server = NamedPipeServerStreamAcl.Create("Epg123StatusPipe", PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances, PipeTransmissionMode.Message, PipeOptions.None, 0, 0, pipeSecurity);
             var reader = new StreamReader(server);
 
             while (!Shutdown)

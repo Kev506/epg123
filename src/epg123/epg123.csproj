@@ -1,22 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8885750E-6175-4115-8CE0-50FBCE5EF888}</ProjectGuid>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>epg123</RootNamespace>
-    <AssemblyName>epg123</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,32 +17,19 @@
     <ApplicationVersion>0.9.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>EPG123.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
@@ -67,87 +40,15 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <StartupObject>epg123.Program</StartupObject>
   </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="sdJson2mxf\brandLogo.cs" />
-    <Compile Include="epgCache.cs" />
-    <Compile Include="epgConfig.cs" />
-    <Compile Include="frmProgress.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmProgress.Designer.cs">
-      <DependentUpon>frmProgress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="sdJson2mxf\mxf2xmltv.cs" />
-    <Compile Include="sdJson2mxf\seasonImages.cs" />
-    <Compile Include="sdJson2mxf\sportsImages.cs" />
-    <Compile Include="sdJson2mxf\keywordGroups.cs" />
-    <Compile Include="sdJson2mxf\sdJson2mxf.cs" />
-    <Compile Include="sdJson2mxf\common.cs" />
-    <Compile Include="sdJson2mxf\lineupServices.cs" />
-    <Compile Include="sdJson2mxf\movieImages.cs" />
-    <Compile Include="sdJson2mxf\programEntries.cs" />
-    <Compile Include="sdJson2mxf\scheduleEntries.cs" />
-    <Compile Include="sdJson2mxf\seriesImages.cs" />
-    <Compile Include="sdJson2mxf\seriesInfos.cs" />
-    <Compile Include="ModernMediaUiPlus.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="frmProgress.resx">
-      <DependentUpon>frmProgress.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -167,56 +68,17 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.manifest" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
+    <ProjectReference Include="..\GaRyan2.Github\GaRyan2.Github.csproj" />
+    <ProjectReference Include="..\GaRyan2.MxfXmltvTools\GaRyan2.MxfXmltvTools.csproj" />
+    <ProjectReference Include="..\GaRyan2.SchedulesDirect\GaRyan2.SchedulesDirect.csproj" />
+    <ProjectReference Include="..\GaRyan2.Tmdb\GaRyan2.Tmdb.csproj" />
+    <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GaRyan2.Github\GaRyan2.Github.csproj">
-      <Project>{e82ca8a5-b4b2-4617-8caa-e4b93a4db330}</Project>
-      <Name>GaRyan2.Github</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.MxfXmltvTools\GaRyan2.MxfXmltvTools.csproj">
-      <Project>{2a8d6f2b-3c96-4314-b61b-5d84eaa02f2f}</Project>
-      <Name>GaRyan2.MxfXmltvTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.SchedulesDirect\GaRyan2.SchedulesDirect.csproj">
-      <Project>{2269b886-0160-4099-9a39-13b888a5f69a}</Project>
-      <Name>GaRyan2.SchedulesDirect</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.Tmdb\GaRyan2.Tmdb.csproj">
-      <Project>{3ad6bcb1-24eb-4212-8639-6886f4c8d201}</Project>
-      <Name>GaRyan2.Tmdb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj">
-      <Project>{ccd05d81-0df1-45ff-9931-a50369526225}</Project>
-      <Name>GaRyan2.Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="EPG123.ico" />
-    <None Include="Resources\updateAvailable.png" />
-    <None Include="Resources\EPG123WarningLight.png" />
-    <None Include="Resources\EPG123WarningDark.png" />
-    <None Include="Resources\EPG123OKLight.png" />
-    <None Include="Resources\EPG123OKDark.png" />
-    <None Include="Resources\EPG123ErrorLight.png" />
-    <None Include="Resources\EPG123ErrorDark.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+  <PropertyGroup />
 </Project>

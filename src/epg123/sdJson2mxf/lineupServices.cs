@@ -8,7 +8,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using api = GaRyan2.SchedulesDirect;
+using System.Net.Http;
+using Api = GaRyan2.SchedulesDirect;
+using System.Threading.Tasks;
 
 namespace epg123.sdJson2mxf
 {
@@ -29,7 +31,7 @@ namespace epg123.sdJson2mxf
             PopulateIncludedExcludedStations(config.StationId);
 
             // query what lineups client is subscribed to
-            var clientLineups = api.GetSubscribedLineups();
+            var clientLineups = Api.GetSubscribedLineups();
             if (clientLineups?.Lineups == null) return false;
 
             // reset counters
@@ -59,7 +61,7 @@ namespace epg123.sdJson2mxf
                 }
 
                 // request the lineup's station maps
-                var lineupMap = api.GetStationChannelMap(clientLineup.Lineup);
+                var lineupMap = Api.GetStationChannelMap(clientLineup.Lineup);
                 if ((lineupMap?.Stations?.Count ?? 0) == 0)
                 {
                     Logger.WriteError($"Subscribed lineup {clientLineup.Lineup} does not contain any stations.");
@@ -294,12 +296,12 @@ namespace epg123.sdJson2mxf
             StationLogosDownloadComplete = true;
         }
 
-        private static void BackgroundDownloader_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private static async void BackgroundDownloader_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             foreach (var serviceLogo in StationLogosToDownload)
             {
                 var logoPath = serviceLogo.Value[0];
-                if ((File.Exists(logoPath) || DownloadSdLogo(serviceLogo.Value[1], logoPath)) && string.IsNullOrEmpty(serviceLogo.Key.LogoImage))
+                if ((File.Exists(logoPath) || await DownloadSdLogo(serviceLogo.Value[1], logoPath)) && string.IsNullOrEmpty(serviceLogo.Key.LogoImage))
                 {
                     serviceLogo.Key.mxfGuideImage = mxf.FindOrCreateGuideImage(Helper.Standalone ? $"file://{logoPath}" : $"http://{HostAddress}:{Helper.TcpUdpPort}/logos/{Path.GetFileName(logoPath)}",
                         Helper.Standalone ? GetStringEncodedImage(logoPath) : null);
@@ -319,12 +321,13 @@ namespace epg123.sdJson2mxf
             }
         }
 
-        private static bool DownloadSdLogo(string uri, string filepath)
+        private static async Task<bool> DownloadSdLogo(string uri, string filepath)
         {
             try
             {
-                var wc = new System.Net.WebClient();
-                using (var stream = new MemoryStream(wc.DownloadData(uri)))
+                using var httpClient = new HttpClient();
+                var bytes = await httpClient.GetByteArrayAsync(uri);
+                using (var stream = new MemoryStream(bytes))
                 {
                     // crop and save image
                     var cropImg = Helper.CropAndResizeImage(Image.FromStream(stream) as Bitmap);

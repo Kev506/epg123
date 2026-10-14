@@ -8,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using api = GaRyan2.SchedulesDirect;
+using Api = GaRyan2.SchedulesDirect;
 
 namespace epg123.sdJson2mxf
 {
@@ -98,7 +98,7 @@ namespace epg123.sdJson2mxf
             }
 
             // request schedule md5s from Schedules Direct
-            var stationResponses = api.GetScheduleMd5s(requests);
+            var stationResponses = Api.GetScheduleMd5s(requests);
             if (stationResponses == null) return false;
 
             // build request of daily schedules not downloaded yet
@@ -204,7 +204,7 @@ namespace epg123.sdJson2mxf
             if (newRequests.Count > 0)
             {
                 // request daily schedules from Schedules Direct
-                var responses = api.GetScheduleListings(newRequests.ToArray());
+                var responses = Api.GetScheduleListings(newRequests.ToArray());
                 if (responses == null) return false;
 
                 // process the responses

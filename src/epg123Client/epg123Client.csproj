@@ -1,21 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12FE1EA6-F6D3-4B06-8707-D3C06663FBAC}</ProjectGuid>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>epg123Client</RootNamespace>
-    <AssemblyName>epg123Client</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,27 +17,17 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\EPG123.ico</ApplicationIcon>
@@ -58,15 +35,12 @@
   <PropertyGroup>
     <StartupObject>epg123Client.Program</StartupObject>
   </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
   <ItemGroup>
     <Reference Include="BDATunePIA, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -83,158 +57,24 @@
       <HintPath>..\wmc_dlls\w7\mcstore.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.ServiceProcess" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="clientForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="clientForm.Designer.cs">
-      <DependentUpon>clientForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ElevatedButton.cs">
+    <Compile Update="ElevatedButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="fileUtil.cs" />
-    <Compile Include="frmAddChannel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAddChannel.Designer.cs">
-      <DependentUpon>frmAddChannel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmClientSetup.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmClientSetup.Designer.cs">
-      <DependentUpon>frmClientSetup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmImport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmImport.Designer.cs">
-      <DependentUpon>frmImport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmMerge.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmMerge.Designer.cs">
-      <DependentUpon>frmMerge.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmRemoteServers.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmRemoteServers.Designer.cs">
-      <DependentUpon>frmRemoteServers.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmSatellites.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSatellites.Designer.cs">
-      <DependentUpon>frmSatellites.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmSourceSelect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSourceSelect.Designer.cs">
-      <DependentUpon>frmSourceSelect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmStorage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmStorage.Designer.cs">
-      <DependentUpon>frmStorage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmUndelete.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmUndelete.Designer.cs">
-      <DependentUpon>frmUndelete.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmWmcTweak.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmWmcTweak.Designer.cs">
-      <DependentUpon>frmWmcTweak.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ListViewSorter.cs" />
-    <Compile Include="SatMxf\SatellitesXml.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="WmcStore.cs" />
-    <Compile Include="SatMxf\SatMxf.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <DependentUpon>Settings.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="resImages.Designer.cs">
-      <DependentUpon>resImages.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="statusLogo.cs" />
-    <Compile Include="VerifyLoad.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <EmbeddedResource Include="frmSourceSelect.resx">
-      <DependentUpon>frmSourceSelect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmStorage.resx">
-      <DependentUpon>frmStorage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="WmcTweak\EPG.MCML" />
     <EmbeddedResource Include="WmcTweak\EPGCELLS.MCML" />
     <EmbeddedResource Include="WmcTweak\EPGCOMMON.MCML" />
     <EmbeddedResource Include="WmcTweak\FILTERBUTTON.MCML" />
     <EmbeddedResource Include="WmcTweak\FILTERLISTBOX.MCML" />
     <EmbeddedResource Include="WmcTweak\CLOCK.MCML" />
-    <None Include="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <EmbeddedResource Include="frmMerge.resx">
-      <DependentUpon>frmMerge.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmRemoteServers.resx">
-      <DependentUpon>frmRemoteServers.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmSatellites.resx">
-      <DependentUpon>frmSatellites.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="WmcTweak\TABLE.MCML" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\EPG123.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -249,93 +89,25 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="clientForm.resx">
-      <DependentUpon>clientForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmAddChannel.resx">
-      <DependentUpon>frmAddChannel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmClientSetup.resx">
-      <DependentUpon>frmClientSetup.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmImport.resx">
-      <DependentUpon>frmImport.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmUndelete.resx">
-      <DependentUpon>frmUndelete.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmWmcTweak.resx">
-      <DependentUpon>frmWmcTweak.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="resImages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>resImages.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\antenna_with_bars.png" />
     <Content Include="Resources\btnDarkOnLight.png" />
     <Content Include="Resources\btnLightOnDark.png" />
-    <None Include="Resources\circled_information_source.png" />
-    <None Include="Resources\circled_information_source_highlight.png" />
     <Content Include="Resources\EPG123ErrorDark.png" />
     <Content Include="Resources\EPG123ErrorLight.png" />
     <Content Include="Resources\EPG123OKDark.png" />
     <Content Include="Resources\EPG123OKLight.png" />
     <Content Include="Resources\EPG123WarningDark.png" />
     <Content Include="Resources\EPG123WarningLight.png" />
-    <None Include="Resources\music.png" />
-    <None Include="Resources\padlock.png" />
-    <None Include="Resources\music_highlight.png" />
-    <None Include="Resources\padlock_highlight.png" />
-    <None Include="Resources\open_lock.png" />
-    <None Include="Resources\no_entry_sign.png" />
-    <None Include="Resources\no_entry_sign_highlight.png" />
     <None Include="Resources\schedules_direct.bmp" />
-    <None Include="Resources\sd.gif" />
-    <None Include="Resources\logo.png" />
     <Content Include="Resources\statusLogoDark.png" />
     <Content Include="Resources\statusLogoLight.png" />
-    <None Include="Resources\television.png" />
     <Content Include="Resources\updateAvailable.png" />
     <EmbeddedResource Include="SatMxf\satellites.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GaRyan2.Github\GaRyan2.Github.csproj">
-      <Project>{e82ca8a5-b4b2-4617-8caa-e4b93a4db330}</Project>
-      <Name>GaRyan2.Github</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.MxfXmltvTools\GaRyan2.MxfXmltvTools.csproj">
-      <Project>{2a8d6f2b-3c96-4314-b61b-5d84eaa02f2f}</Project>
-      <Name>GaRyan2.MxfXmltvTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj">
-      <Project>{ccd05d81-0df1-45ff-9931-a50369526225}</Project>
-      <Name>GaRyan2.Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GaRyan2.WmcUtilities\GaRyan2.WmcUtilities.csproj">
-      <Project>{219157cf-c436-4659-8af1-3aa2b6420102}</Project>
-      <Name>GaRyan2.WmcUtilities</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\GaRyan2.Github\GaRyan2.Github.csproj" />
+    <ProjectReference Include="..\GaRyan2.MxfXmltvTools\GaRyan2.MxfXmltvTools.csproj" />
+    <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj" />
+    <ProjectReference Include="..\GaRyan2.WmcUtilities\GaRyan2.WmcUtilities.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <PropertyGroup />
 </Project>

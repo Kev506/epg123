@@ -10,7 +10,7 @@ namespace GaRyan2.TmdbApi
         private bool IsAlive = true;
 
         public TmdbConfiguration Config;
-        private readonly bool IncludeAdultTitles;
+        private readonly bool IncludeAdultTitles = false;
 
         private TmdbConfiguration GetTmdbConfigurations()
         {

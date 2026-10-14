@@ -7,7 +7,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace GaRyan2.WmcUtilities
 {
@@ -138,20 +140,8 @@ namespace GaRyan2.WmcUtilities
         }
         #endregion
 
-        class MyWebClient : WebClient
-        {
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                var request = (HttpWebRequest)base.GetWebRequest(address);
-                request.UserAgent = $"EPG123/{Helper.Epg123Version}";
-                request.Timeout = 10 * 60 * 1000; // allow 10 minutes for download to start
-                request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                return request;
-            }
-        }
-
         #region ========== LoadMxf ==========
-        public static bool ImportMxfFile(string mxfFile, bool forceImport = false)
+        public static async Task<bool> ImportMxfFile(string mxfFile, bool forceImport = false)
         {
             var ret = false;
             Logger.WriteMessage($"Entering ImportMxfFile() for file \"{mxfFile}\".");
@@ -170,9 +160,12 @@ namespace GaRyan2.WmcUtilities
                         {
                             File.Delete(filepath);
                         }
-                        using (var wc = new MyWebClient())
+                        using (var handler = new HttpClientHandler { AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip })
+                        using (var client = new HttpClient(handler) { Timeout = TimeSpan.FromMinutes(10) })
                         {
-                            wc.DownloadFile(new Uri(mxfFile), filepath);
+                            client.DefaultRequestHeaders.UserAgent.ParseAdd($"EPG123/{Helper.Epg123Version}");
+                            var bytes = await client.GetByteArrayAsync(uri);
+                            File.WriteAllBytes(filepath, bytes);
                             mxfFile = filepath;
                         }
                     }
@@ -300,7 +293,7 @@ namespace GaRyan2.WmcUtilities
             return ret;
         }
 
-        public static bool SetWmcTunerLimits(int tuners)
+        public static async Task<bool> SetWmcTunerLimitsAsync(int tuners)
         {
             var ret = false;
             string[] countries = { /*"default", */"au", "be", "br", "ca", "ch", "cn", "cz", "de", "dk", "es", "fi", "fr", "gb", "hk", "hu", "ie", "in",/* "it",*/ "jp", "kr", "mx", "nl", "no", "nz", "pl",/* "pt",*/ "ru", "se", "sg", "sk",/* "tr", "tw",*/ "us", "za" };
@@ -346,7 +339,7 @@ namespace GaRyan2.WmcUtilities
                 }
 
                 // import tweak using loadmxf.exe because for some reason the MxfImporter doesn't work for this
-                ret = ImportMxfFile(mxfFilepath);
+                ret = await ImportMxfFile(mxfFilepath);
 
                 // delete temporary file
                 Helper.DeleteFile(mxfFilepath);

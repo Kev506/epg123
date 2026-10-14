@@ -17,9 +17,8 @@ namespace GaRyan2.WmcUtilities
             get
             {
                 if (_objectStore != null && !StoreExpired) return _objectStore;
-                var sha256Man = new SHA256Managed();
                 ObjectStore.FriendlyName = @"Anonymous!User";
-                ObjectStore.DisplayName = Convert.ToBase64String(sha256Man.ComputeHash(Encoding.Unicode.GetBytes(ObjectStore.GetClientId(true))));
+                ObjectStore.DisplayName = Convert.ToBase64String(SHA256.HashData(Encoding.Unicode.GetBytes(ObjectStore.GetClientId(true))));
                 _objectStore = ObjectStore.AddObjectStoreReference();
                 StoreExpired = false;
 

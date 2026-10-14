@@ -5,11 +5,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading;
 
 namespace epg123Server
 {
+    [SupportedOSPlatform("windows")]
     class HttpFileServer : IDisposable
     {
         private readonly object _plutoLock = new object();
