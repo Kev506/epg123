@@ -12,29 +12,43 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Windows.Forms;
+using epg123_gui.ViewModels;
 
 namespace epg123_gui
 {
     public partial class frmLogos : Form
     {
         private readonly LineupStation _station;
+        private readonly LogosViewModel _viewModel = new LogosViewModel();
         private PictureBox _selectedBox = null;
         private readonly string _customLogo;
         private readonly bool isRemote = Settings.Default.CfgLocation.StartsWith("http");
         private readonly string baseLogoPath = Settings.Default.CfgLocation.Replace("\\epg123.cfg", "\\logos\\").Replace("/epg123/epg123.cfg", "/logos/");
         private readonly List<string> availableLogos;
-        public bool LogoChanged;
+        public bool LogoChanged
+        {
+            get => _viewModel.LogoChanged;
+            private set => _viewModel.LogoChanged = value;
+        }
+
+        private static Color DarkPreviewBackColor =>
+            Application.IsDarkModeEnabled ? Color.FromArgb(255, 45, 45, 48) : Color.FromArgb(255, 6, 15, 30);
+
+        private static Color LightPreviewBackColor =>
+            Application.IsDarkModeEnabled ? SystemColors.ControlLightLight : Color.White;
 
         public frmLogos(LineupStation station)
         {
             InitializeComponent();
+            DataContext = _viewModel;
+            label7.DataBindings.Add(nameof(Label.Text), _viewModel, nameof(LogosViewModel.StationSummary), true, DataSourceUpdateMode.OnPropertyChanged);
 
             _station = station;
             _customLogo = $"{station.Callsign}_c.png";
             if (isRemote) availableLogos = SchedulesDirect.GetCustomLogosFromServer($"{baseLogoPath}custom");
             else availableLogos = Directory.GetFiles(Helper.Epg123LogosFolder, "*.png").ToList().Select(logo => logo.Substring(Helper.Epg123LogosFolder.Length)).ToList();
 
-            label7.Text = $"{station.Callsign}\n{station.Name}\n{station.Affiliate}";
+            _viewModel.StationSummary = $"{station.Callsign}\n{station.Name}\n{station.Affiliate}";
         }
 
         private void frmLogos_Load(object sender, EventArgs e)
@@ -71,7 +85,7 @@ namespace epg123_gui
             {
                 var logoFilePath = $"{baseLogoPath}{_customLogo}";
 
-                pbCustomLocal.BackColor = Color.FromArgb(255, 6, 15, 30);
+                pbCustomLocal.BackColor = DarkPreviewBackColor;
                 if (isRemote) pbCustomLocal.Load(logoFilePath);
                 else pbCustomLocal.Image = Image.FromFile(logoFilePath);
                 pbCustomLocal.Tag = logoFilePath;
@@ -81,7 +95,7 @@ namespace epg123_gui
             // load targeted background logos
             var categories = new string[] { "dark", "white", "light", "gray" };
             var pictureBoxes = new PictureBox[] { pbDarkLocal, pbWhiteLocal, pbLightLocal, pbGrayLocal };
-            var backColors = new Color[] { Color.FromArgb(255, 6, 15, 30), Color.FromArgb(255, 6, 15, 30), Color.White, Color.White };
+            var backColors = new Color[] { DarkPreviewBackColor, DarkPreviewBackColor, LightPreviewBackColor, LightPreviewBackColor };
             for (int i = 0; i < categories.Length; ++i)
             {
                 var stationLogo = _station.StationLogos?.FirstOrDefault(arg => arg.Category != null && arg.Category.Equals(categories[i], StringComparison.OrdinalIgnoreCase));
@@ -106,7 +120,7 @@ namespace epg123_gui
                 {
                     var logoFilepath = $"{baseLogoPath}{_station.Logo.Md5}.png";
 
-                    pbDefaultLocal.BackColor = Color.FromArgb(255, 6, 15, 30);
+                    pbDefaultLocal.BackColor = DarkPreviewBackColor;
                     if (isRemote) pbDefaultLocal.Load(logoFilepath);
                     else pbDefaultLocal.Image = Image.FromFile(logoFilepath);
                     pbDefaultLocal.Tag = logoFilepath;
@@ -119,7 +133,7 @@ namespace epg123_gui
         {
             if (_station.Logo != null)
             {
-                pbDefaultRemote.BackColor = Color.FromArgb(255, 6, 15, 30);
+                pbDefaultRemote.BackColor = DarkPreviewBackColor;
                 pbDefaultRemote.Load(_station.Logo.Url);
             }
 
@@ -130,25 +144,25 @@ namespace epg123_gui
                 {
                     case "dark":
                         if (pbDarkRemote.Image != null) break;
-                        pbDarkRemote.BackColor = Color.FromArgb(255, 6, 15, 30);
+                        pbDarkRemote.BackColor = DarkPreviewBackColor;
                         pbDarkRemote.Load(image.Url);
                         pbDarkRemote.Refresh();
                         break;
                     case "white":
                         if (pbWhiteRemote.Image != null) break;
-                        pbWhiteRemote.BackColor = Color.FromArgb(255, 6, 15, 30);
+                        pbWhiteRemote.BackColor = DarkPreviewBackColor;
                         pbWhiteRemote.Load(image.Url);
                         pbWhiteRemote.Refresh();
                         break;
                     case "light":
                         if (pbLightRemote.Image != null) break;
-                        pbLightRemote.BackColor = Color.White;
+                        pbLightRemote.BackColor = LightPreviewBackColor;
                         pbLightRemote.Load(image.Url);
                         pbLightRemote.Refresh();
                         break;
                     case "gray":
                         if (pbGrayRemote.Image != null) break;
-                        pbGrayRemote.BackColor = Color.White;
+                        pbGrayRemote.BackColor = LightPreviewBackColor;
                         pbGrayRemote.Load(image.Url);
                         pbGrayRemote.Refresh();
                         break;
@@ -219,66 +233,79 @@ namespace epg123_gui
         private async void pictureBox_DragDrop(object sender, DragEventArgs e)
         {
             Bitmap imgBitmap = null;
-            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+            Image image = null;
+            try
             {
-                imgBitmap = (Bitmap)e.Data.GetData(DataFormats.Bitmap, true);
-            }
-            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                imgBitmap = Image.FromFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]).Clone() as Bitmap;
-            }
-            else if (e.Data.GetDataPresent(DataFormats.StringFormat))
-            {
-                var link = (string)e.Data.GetData(DataFormats.StringFormat);
-                if (!link.StartsWith("http", StringComparison.OrdinalIgnoreCase)) return;
-
-                try
+                if (e.Data.GetDataPresent(DataFormats.Bitmap))
                 {
-                    using (var client = new HttpClient())
-                    using (var stream = new MemoryStream(await client.GetByteArrayAsync(link)))
+                    imgBitmap = (Bitmap)e.Data.GetData(DataFormats.Bitmap, true);
+                }
+                else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                    imgBitmap = Image.FromFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]).Clone() as Bitmap;
+                }
+                else if (e.Data.GetDataPresent(DataFormats.StringFormat))
+                {
+                    var link = (string)e.Data.GetData(DataFormats.StringFormat);
+                    if (!link.StartsWith("http", StringComparison.OrdinalIgnoreCase)) return;
+
+                    try
                     {
-                        imgBitmap = Image.FromStream(stream) as Bitmap;
+                        using (var client = new HttpClient())
+                        using (var stream = new MemoryStream(await client.GetByteArrayAsync(link)))
+                        {
+                            imgBitmap = Image.FromStream(stream) as Bitmap;
+                        }
+                    }
+                    catch
+                    {
+                        // do nothing, will return anyway since imgBitmap will be null
                     }
                 }
-                catch
+
+                var target = (PictureBox)sender;
+                if (imgBitmap == null || _selectedBox == target) return;
+
+                var path = $"{baseLogoPath}{_customLogo}";
+                if (target.Image != null)
                 {
-                    // do nothing, will return anyway since imgBitmap will be null
+                    target.Image.Dispose();
+                    target.Image = null;
+                    target.Refresh();
                 }
-            }
-            var target = (PictureBox)sender;
-            if (imgBitmap == null || _selectedBox == target) return;
 
-            var path = $"{baseLogoPath}{_customLogo}";
-            if (target.Image != null)
-            {
-                target.Image.Dispose();
-                target.Image = null;
-                target.Refresh();
-            }
-
-            var image = Helper.CropAndResizeImage(imgBitmap);
-            if (isRemote)
-            {
-                using (var ms = new MemoryStream())
+                image = Helper.CropAndResizeImage(imgBitmap);
+                if (isRemote)
                 {
-                    image.Save(ms, ImageFormat.Png);
-                    if (SchedulesDirect.UploadLogo(path.Replace("/logos/", "/logos/custom/"), ms.ToArray()) && !availableLogos.Contains($"{_customLogo}"))
+                    using (var ms = new MemoryStream())
                     {
-                        availableLogos.Add($"{_customLogo}");
-                        LogoChanged = true;
+                        image.Save(ms, ImageFormat.Png);
+                        if (SchedulesDirect.UploadLogo(path.Replace("/logos/", "/logos/custom/"), ms.ToArray()) && !availableLogos.Contains($"{_customLogo}"))
+                        {
+                            availableLogos.Add($"{_customLogo}");
+                            LogoChanged = true;
+                        }
                     }
                 }
-            }
-            else
-            {
-                if (File.Exists(path)) DeleteToRecycle(path);
-                image.Save(path, ImageFormat.Png);
-                if (!availableLogos.Contains($"{_customLogo}")) availableLogos.Add($"{_customLogo}");
-            }
-            imgBitmap.Dispose();
-            image.Dispose();
+                else
+                {
+                    if (File.Exists(path)) DeleteToRecycle(path);
+                    image.Save(path, ImageFormat.Png);
+                    if (!availableLogos.Contains($"{_customLogo}")) availableLogos.Add($"{_customLogo}");
+                }
 
-            LoadLocalImages();
+                LoadLocalImages();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteError($"Failed to process dropped logo image. Exception:{Helper.ReportExceptionMessages(ex)}");
+                MessageBox.Show("Unable to process dropped image. See log for details.", "Logo Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                imgBitmap?.Dispose();
+                image?.Dispose();
+            }
         }
 
         private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)

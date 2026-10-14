@@ -1,4 +1,5 @@
 ﻿using epg123;
+using epg123_gui.ViewModels;
 using epg123_gui.Properties;
 using GaRyan2.SchedulesDirectAPI;
 using GaRyan2.Utilities;
@@ -38,6 +39,7 @@ namespace epg123_gui
         }
         private readonly EpgTaskScheduler _task = new EpgTaskScheduler();
         private readonly ImageList _imageList = new ImageList();
+        private readonly ConfigFormViewModel _viewModel = new ConfigFormViewModel();
         private bool _newLogin;
         private bool _clientSetup;
 
@@ -56,6 +58,8 @@ namespace epg123_gui
 
             // create form objects
             InitializeComponent();
+            InitializeViewModelBindings();
+            DataContext = _viewModel;
             _imageList.ColorDepth = ColorDepth.Depth32Bit;
 
             // adjust components for screen dpi
@@ -84,6 +88,13 @@ namespace epg123_gui
 
             // initialize the logger
             Logger.Initialize(Helper.Epg123TraceLogPath, "Activating the configuration GUI", false);
+        }
+
+        private void InitializeViewModelBindings()
+        {
+            txtBaseApi.DataBindings.Add(nameof(TextBox.Text), _viewModel, nameof(ConfigFormViewModel.BaseApiUrl), true, DataSourceUpdateMode.OnPropertyChanged);
+            txtBaseArtwork.DataBindings.Add(nameof(TextBox.Text), _viewModel, nameof(ConfigFormViewModel.BaseArtworkUrl), true, DataSourceUpdateMode.OnPropertyChanged);
+            ckDebug.DataBindings.Add(nameof(CheckBox.Checked), _viewModel, nameof(ConfigFormViewModel.UseDebug), true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)
@@ -182,67 +193,69 @@ namespace epg123_gui
 
         private async void LoadConfigurationFile(bool reload)
         {
-            // start service if needed
-            if (Helper.InstallMethod <= Helper.Installation.SERVER) UdpFunctions.StartService();
-
-            // determine path to cfg file
-            if (reload) Settings.Default.CfgLocation = null;
-            if (string.IsNullOrEmpty(Settings.Default.CfgLocation) ||
-               (Helper.InstallMethod == Helper.Installation.PORTABLE && !Settings.Default.CfgLocation.Contains(Helper.Epg123ProgramDataFolder)) ||
-               (Helper.InstallMethod != Helper.Installation.CLIENT && !Settings.Default.CfgLocation.Contains("localhost")) ||
-               (Helper.InstallMethod == Helper.Installation.CLIENT && (Settings.Default.CfgLocation.Contains(Helper.Epg123ProgramDataFolder) || Settings.Default.CfgLocation.Contains("localhost"))))
+            try
             {
-                switch (Helper.InstallMethod)
-                {
-                    case Helper.Installation.CLIENT:
-                        var frmRemote = new frmRemoteServers();
-                        frmRemote.ShowDialog();
-                        if (!string.IsNullOrEmpty(frmRemote.cfgPath)) Settings.Default.CfgLocation = frmRemote.cfgPath;
-                        break;
-                    case Helper.Installation.FULL:
-                    case Helper.Installation.SERVER:
-                    case Helper.Installation.PORTABLE:
-                        Settings.Default.CfgLocation = Helper.Epg123CfgPath;
-                        break;
-                    default: // UNKNOWN
-                        Settings.Default.CfgLocation = null;
-                        MessageBox.Show("Unknown installation method. Closing application.", "Exiting");
-                        break;
-                }
-                if (string.IsNullOrEmpty(Settings.Default.CfgLocation)) return;
-            }
+                // start service if needed
+                if (Helper.InstallMethod <= Helper.Installation.SERVER) UdpFunctions.StartService();
 
-            // load cfg file
-            if (Settings.Default.CfgLocation.StartsWith("http://"))
-            {
-                try
+                // determine path to cfg file
+                if (reload) Settings.Default.CfgLocation = null;
+                if (string.IsNullOrEmpty(Settings.Default.CfgLocation) ||
+                   (Helper.InstallMethod == Helper.Installation.PORTABLE && !Settings.Default.CfgLocation.Contains(Helper.Epg123ProgramDataFolder)) ||
+                   (Helper.InstallMethod != Helper.Installation.CLIENT && !Settings.Default.CfgLocation.Contains("localhost")) ||
+                   (Helper.InstallMethod == Helper.Installation.CLIENT && (Settings.Default.CfgLocation.Contains(Helper.Epg123ProgramDataFolder) || Settings.Default.CfgLocation.Contains("localhost"))))
                 {
-                    // download config file
-                    var cfg = await DownloadStringFromUrl(Settings.Default.CfgLocation);
-                    var serializer = new XmlSerializer(typeof(epgConfig));
-                    var reader = new StringReader(cfg);
-                    Config = (epgConfig)serializer.Deserialize(reader);
-                    Logger.WriteInformation($"Successfully downloaded configuration file from {Settings.Default.CfgLocation}.");
-
-                    // if new config file on remote server, ensure UseIpAddress is set
-                    if (Helper.InstallMethod == Helper.Installation.CLIENT && string.IsNullOrEmpty(Config.UseIpAddress))
+                    switch (Helper.InstallMethod)
                     {
-                        Config.UseIpAddress = Settings.Default.CfgLocation.Substring("http://".Length).Split(':')[0];
+                        case Helper.Installation.CLIENT:
+                            var frmRemote = new frmRemoteServers();
+                            frmRemote.ShowDialog();
+                            if (!string.IsNullOrEmpty(frmRemote.cfgPath)) Settings.Default.CfgLocation = frmRemote.cfgPath;
+                            break;
+                        case Helper.Installation.FULL:
+                        case Helper.Installation.SERVER:
+                        case Helper.Installation.PORTABLE:
+                            Settings.Default.CfgLocation = Helper.Epg123CfgPath;
+                            break;
+                        default: // UNKNOWN
+                            Settings.Default.CfgLocation = null;
+                            MessageBox.Show("Unknown installation method. Closing application.", "Exiting");
+                            break;
+                    }
+                    if (string.IsNullOrEmpty(Settings.Default.CfgLocation)) return;
+                }
+
+                // load cfg file
+                if (Settings.Default.CfgLocation.StartsWith("http://"))
+                {
+                    try
+                    {
+                        // download config file
+                        var cfg = await DownloadStringFromUrl(Settings.Default.CfgLocation);
+                        var serializer = new XmlSerializer(typeof(epgConfig));
+                        var reader = new StringReader(cfg);
+                        Config = (epgConfig)serializer.Deserialize(reader);
+                        Logger.WriteInformation($"Successfully downloaded configuration file from {Settings.Default.CfgLocation}.");
+
+                        // if new config file on remote server, ensure UseIpAddress is set
+                        if (Helper.InstallMethod == Helper.Installation.CLIENT && string.IsNullOrEmpty(Config.UseIpAddress))
+                        {
+                            Config.UseIpAddress = Settings.Default.CfgLocation.Substring("http://".Length).Split(':')[0];
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteError($"Failed to download configuration file from {Settings.Default.CfgLocation}. Exception:{Helper.ReportExceptionMessages(ex)}");
+                        if (!reload)
+                        {
+                            LoadConfigurationFile(true);
+                            return;
+                        }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logger.WriteError($"Failed to download configuration file from {Settings.Default.CfgLocation}. Exception:{Helper.ReportExceptionMessages(ex)}");
-                    if (!reload)
-                    {
-                        LoadConfigurationFile(true);
-                        return;
-                    }
-                }
-            }
-            else Config = (epgConfig)Helper.ReadXmlFile(Settings.Default.CfgLocation, typeof(epgConfig));
-            if (Config == null) Config = new epgConfig();
-            _originalConfig = Config.Clone();
+                else Config = (epgConfig)Helper.ReadXmlFile(Settings.Default.CfgLocation, typeof(epgConfig));
+                if (Config == null) Config = new epgConfig();
+                _originalConfig = Config.Clone();
 
             // set control states and values
             txtLoginName.Text = Config.UserAccount?.LoginName;
@@ -282,9 +295,9 @@ namespace epg123_gui
             ckXmltvExtendedInfo.Checked = Config.XmltvExtendedInfoInTitleDescriptions;
             cbXmltvSingleImage.Checked = Config.XmltvSingleImage;
 
-            txtBaseApi.Text = Config.BaseApiUrl;
-            txtBaseArtwork.Text = Config.BaseArtworkUrl;
-            ckDebug.Checked = Config.UseDebug;
+            _viewModel.BaseApiUrl = Config.BaseApiUrl;
+            _viewModel.BaseArtworkUrl = Config.BaseArtworkUrl;
+            _viewModel.UseDebug = Config.UseDebug;
             var index = Array.FindIndex(daysRetention, arg => arg == Config.CacheRetention);
             cbCacheRetention.Text = (string)cbCacheRetention.Items[index];
             if (Helper.InstallMethod != Helper.Installation.CLIENT)
@@ -328,6 +341,12 @@ namespace epg123_gui
                 lblAspect.Enabled = lblSize.Enabled = pnlAspect.Enabled = pnlSize.Enabled = false;
                 lblAspect.Font = lblSize.Font = rdo2x3.Font = rdo3x4.Font = rdo4x3.Font = rdo16x9.Font = rdoSm.Font = rdoMd.Font = rdoLg.Font =
                     new Font(lblAspect.Font, lblAspect.Font.Style | FontStyle.Strikeout);
+            }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteError($"Failed to load configuration. Exception:{Helper.ReportExceptionMessages(ex)}");
+                MessageBox.Show("Failed to load configuration. See log for details.", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -1221,6 +1240,13 @@ namespace epg123_gui
             _allStations[stationId].Include = e.NewValue == CheckState.Checked;
         }
 
+        private static Color GetLineupHeaderHoverBackColor()
+        {
+            return Application.IsDarkModeEnabled
+                ? Color.FromArgb(255, 62, 62, 66)
+                : Color.FromArgb(255, 217, 235, 249);
+        }
+
         private void lvLineupChannels_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
             if (e.ColumnIndex != 3)
@@ -1238,18 +1264,24 @@ namespace epg123_gui
 
             if (Cursor == Cursors.Default && mouse.X > 7 && mouse.X < e.Bounds.Width + 7 && mouse.Y >= 0 && mouse.Y < e.Bounds.Height)
             {
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 217, 235, 249)), e.Bounds);
+                using (var hoverBrush = new SolidBrush(GetLineupHeaderHoverBackColor()))
+                {
+                    e.Graphics.FillRectangle(hoverBrush, e.Bounds);
+                }
             }
 
             e.Graphics.DrawLine(SystemPens.ControlLight, e.Bounds.Right - 1, e.Bounds.Y, e.Bounds.Right - 1, e.Bounds.Bottom);
             e.Graphics.DrawLine(SystemPens.ControlLight, e.Bounds.Left + 48, e.Bounds.Y, e.Bounds.Left + 48, e.Bounds.Bottom);
 
             var sf = new StringFormat { LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap };
-            e.Graphics.DrawString(e.Header.Text, lvLineupChannels.Font, new SolidBrush(e.ForeColor),
-                new Rectangle(e.Bounds.X + 51, e.Bounds.Y, e.Bounds.Width - 48, e.Bounds.Height), sf);
-            sf.Alignment = StringAlignment.Center;
-            e.Graphics.DrawString("Logo", lvLineupChannels.Font, new SolidBrush(e.ForeColor),
-                new Rectangle(e.Bounds.X, e.Bounds.Y, 48, e.Bounds.Height), sf);
+            using (var headerBrush = new SolidBrush(e.ForeColor))
+            {
+                e.Graphics.DrawString(e.Header.Text, lvLineupChannels.Font, headerBrush,
+                    new Rectangle(e.Bounds.X + 51, e.Bounds.Y, e.Bounds.Width - 48, e.Bounds.Height), sf);
+                sf.Alignment = StringAlignment.Center;
+                e.Graphics.DrawString("Logo", lvLineupChannels.Font, headerBrush,
+                    new Rectangle(e.Bounds.X, e.Bounds.Y, 48, e.Bounds.Height), sf);
+            }
         }
         #endregion
         #endregion
@@ -1433,17 +1465,17 @@ namespace epg123_gui
 
         private void txtBaseApi_TextChanged(object sender, EventArgs e)
         {
-            Config.BaseApiUrl = txtBaseApi.Text;
+            if (Config != null) Config.BaseApiUrl = _viewModel.BaseApiUrl;
         }
 
         private void txtBaseArtwork_TextChanged(object sender, EventArgs e)
         {
-            Config.BaseArtworkUrl = txtBaseArtwork.Text;
+            if (Config != null) Config.BaseArtworkUrl = _viewModel.BaseArtworkUrl;
         }
 
         private void ckDebug_CheckedChanged(object sender, EventArgs e)
         {
-            Config.UseDebug = ckDebug.Checked;
+            if (Config != null) Config.UseDebug = _viewModel.UseDebug;
         }
 
         private void btnChangeServer_Click(object sender, EventArgs e)
@@ -1481,17 +1513,27 @@ namespace epg123_gui
 
         private async void txtBaseApi_Validating(object sender, CancelEventArgs e)
         {
-            if (txtBaseApi.Text == _originalConfig.BaseApiUrl) return;
-            if (string.IsNullOrEmpty(txtBaseApi.Text)) { txtBaseApi.Text = _originalConfig.BaseApiUrl; return; }
-            if (!(Uri.TryCreate(txtBaseApi.Text, UriKind.Absolute, out Uri baseUri) && (baseUri.Scheme == Uri.UriSchemeHttp || baseUri.Scheme == Uri.UriSchemeHttps)))
+            try
             {
-                MessageBox.Show("Not a valid http address. Don't forget the leading \"http\" or \"https\".", "Input Error");
-                e.Cancel = true;
-                return;
+                if (txtBaseApi.Text == _originalConfig.BaseApiUrl) return;
+                if (string.IsNullOrEmpty(txtBaseApi.Text)) { txtBaseApi.Text = _originalConfig.BaseApiUrl; return; }
+                if (!(Uri.TryCreate(txtBaseApi.Text, UriKind.Absolute, out Uri baseUri) && (baseUri.Scheme == Uri.UriSchemeHttp || baseUri.Scheme == Uri.UriSchemeHttps)))
+                {
+                    MessageBox.Show("Not a valid http address. Don't forget the leading \"http\" or \"https\".", "Input Error");
+                    e.Cancel = true;
+                    return;
+                }
+                if (!await TryHttpAddress(txtBaseApi.Text))
+                {
+                    MessageBox.Show("Not a valid Schedules Direct address.", "URL Incorrect");
+                    txtBaseApi.Text = _originalConfig.BaseApiUrl;
+                    e.Cancel = true;
+                }
             }
-            if (!await TryHttpAddress(txtBaseApi.Text))
+            catch (Exception ex)
             {
-                MessageBox.Show("Not a valid Schedules Direct address.", "URL Incorrect");
+                Logger.WriteError($"Error validating Base API URL. Exception:{Helper.ReportExceptionMessages(ex)}");
+                MessageBox.Show("Unable to validate Base API URL. Reverting to previous value.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtBaseApi.Text = _originalConfig.BaseApiUrl;
                 e.Cancel = true;
             }
@@ -1499,17 +1541,27 @@ namespace epg123_gui
 
         private async void txtBaseArtwork_Validating(object sender, CancelEventArgs e)
         {
-            if (txtBaseArtwork.Text == _originalConfig.BaseArtworkUrl) return;
-            if (string.IsNullOrEmpty(txtBaseArtwork.Text)) { txtBaseArtwork.Text = _originalConfig.BaseArtworkUrl; return; }
-            if (!(Uri.TryCreate(txtBaseArtwork.Text, UriKind.Absolute, out Uri baseUri) && (baseUri.Scheme == Uri.UriSchemeHttp || baseUri.Scheme == Uri.UriSchemeHttps)))
+            try
             {
-                MessageBox.Show("Not a valid http address. Don't forget the leading \"http\" or \"https\".", "Input Error");
-                e.Cancel = true;
-                return;
+                if (txtBaseArtwork.Text == _originalConfig.BaseArtworkUrl) return;
+                if (string.IsNullOrEmpty(txtBaseArtwork.Text)) { txtBaseArtwork.Text = _originalConfig.BaseArtworkUrl; return; }
+                if (!(Uri.TryCreate(txtBaseArtwork.Text, UriKind.Absolute, out Uri baseUri) && (baseUri.Scheme == Uri.UriSchemeHttp || baseUri.Scheme == Uri.UriSchemeHttps)))
+                {
+                    MessageBox.Show("Not a valid http address. Don't forget the leading \"http\" or \"https\".", "Input Error");
+                    e.Cancel = true;
+                    return;
+                }
+                if (!await TryHttpAddress(txtBaseArtwork.Text))
+                {
+                    MessageBox.Show("Not a valid Schedules Direct address.", "URL Incorrect");
+                    txtBaseArtwork.Text = _originalConfig.BaseArtworkUrl;
+                    e.Cancel = true;
+                }
             }
-            if (!await TryHttpAddress(txtBaseArtwork.Text))
+            catch (Exception ex)
             {
-                MessageBox.Show("Not a valid Schedules Direct address.", "URL Incorrect");
+                Logger.WriteError($"Error validating Base Artwork URL. Exception:{Helper.ReportExceptionMessages(ex)}");
+                MessageBox.Show("Unable to validate Base Artwork URL. Reverting to previous value.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtBaseArtwork.Text = _originalConfig.BaseArtworkUrl;
                 e.Cancel = true;
             }
