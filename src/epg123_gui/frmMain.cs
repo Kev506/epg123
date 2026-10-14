@@ -1221,6 +1221,13 @@ namespace epg123_gui
             _allStations[stationId].Include = e.NewValue == CheckState.Checked;
         }
 
+        private static Color GetLineupHeaderHoverBackColor()
+        {
+            return Application.IsDarkModeEnabled
+                ? Color.FromArgb(255, 62, 62, 66)
+                : Color.FromArgb(255, 217, 235, 249);
+        }
+
         private void lvLineupChannels_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
         {
             if (e.ColumnIndex != 3)
@@ -1238,18 +1245,24 @@ namespace epg123_gui
 
             if (Cursor == Cursors.Default && mouse.X > 7 && mouse.X < e.Bounds.Width + 7 && mouse.Y >= 0 && mouse.Y < e.Bounds.Height)
             {
-                e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 217, 235, 249)), e.Bounds);
+                using (var hoverBrush = new SolidBrush(GetLineupHeaderHoverBackColor()))
+                {
+                    e.Graphics.FillRectangle(hoverBrush, e.Bounds);
+                }
             }
 
             e.Graphics.DrawLine(SystemPens.ControlLight, e.Bounds.Right - 1, e.Bounds.Y, e.Bounds.Right - 1, e.Bounds.Bottom);
             e.Graphics.DrawLine(SystemPens.ControlLight, e.Bounds.Left + 48, e.Bounds.Y, e.Bounds.Left + 48, e.Bounds.Bottom);
 
             var sf = new StringFormat { LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap };
-            e.Graphics.DrawString(e.Header.Text, lvLineupChannels.Font, new SolidBrush(e.ForeColor),
-                new Rectangle(e.Bounds.X + 51, e.Bounds.Y, e.Bounds.Width - 48, e.Bounds.Height), sf);
-            sf.Alignment = StringAlignment.Center;
-            e.Graphics.DrawString("Logo", lvLineupChannels.Font, new SolidBrush(e.ForeColor),
-                new Rectangle(e.Bounds.X, e.Bounds.Y, 48, e.Bounds.Height), sf);
+            using (var headerBrush = new SolidBrush(e.ForeColor))
+            {
+                e.Graphics.DrawString(e.Header.Text, lvLineupChannels.Font, headerBrush,
+                    new Rectangle(e.Bounds.X + 51, e.Bounds.Y, e.Bounds.Width - 48, e.Bounds.Height), sf);
+                sf.Alignment = StringAlignment.Center;
+                e.Graphics.DrawString("Logo", lvLineupChannels.Font, headerBrush,
+                    new Rectangle(e.Bounds.X, e.Bounds.Y, 48, e.Bounds.Height), sf);
+            }
         }
         #endregion
         #endregion

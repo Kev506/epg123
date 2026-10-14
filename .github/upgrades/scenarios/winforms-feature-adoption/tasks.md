@@ -1,12 +1,12 @@
 # WinForms Feature Adoption Progress
 
-## Overview
-
+**Progress**: 2/8 tasks complete <progress value="25" max="100"></progress> 25%
+**Status**: Not Started
 Modernize the `epg123_gui` WinForms application by adopting dark mode, modern async UI patterns, and incremental MVVM architecture. The work is sequenced to establish application-level theming first, then improve async reliability, then extract presentation logic into view models.
 
 **Progress**: 1/8 tasks complete <progress value="12" max="100"></progress> 12%
 
-## Tasks
+- ✅ 02-adapt-dark-mode-core-forms: Adapt high-impact forms for dark mode ([Content](tasks/02-adapt-dark-mode-core-forms/task.md), [Progress](tasks/02-adapt-dark-mode-core-forms/progress-details.md))
 
 - ✅ 01-enable-dark-mode-bootstrap: Enable dark mode at application startup ([Content](tasks/01-enable-dark-mode-bootstrap/task.md), [Progress](tasks/01-enable-dark-mode-bootstrap/progress-details.md))
 - 🔲 02-adapt-dark-mode-core-forms: Adapt high-impact forms for dark mode

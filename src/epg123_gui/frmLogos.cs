@@ -25,6 +25,12 @@ namespace epg123_gui
         private readonly List<string> availableLogos;
         public bool LogoChanged;
 
+        private static Color DarkPreviewBackColor =>
+            Application.IsDarkModeEnabled ? Color.FromArgb(255, 45, 45, 48) : Color.FromArgb(255, 6, 15, 30);
+
+        private static Color LightPreviewBackColor =>
+            Application.IsDarkModeEnabled ? SystemColors.ControlLightLight : Color.White;
+
         public frmLogos(LineupStation station)
         {
             InitializeComponent();
@@ -71,7 +77,7 @@ namespace epg123_gui
             {
                 var logoFilePath = $"{baseLogoPath}{_customLogo}";
 
-                pbCustomLocal.BackColor = Color.FromArgb(255, 6, 15, 30);
+                pbCustomLocal.BackColor = DarkPreviewBackColor;
                 if (isRemote) pbCustomLocal.Load(logoFilePath);
                 else pbCustomLocal.Image = Image.FromFile(logoFilePath);
                 pbCustomLocal.Tag = logoFilePath;
@@ -81,7 +87,7 @@ namespace epg123_gui
             // load targeted background logos
             var categories = new string[] { "dark", "white", "light", "gray" };
             var pictureBoxes = new PictureBox[] { pbDarkLocal, pbWhiteLocal, pbLightLocal, pbGrayLocal };
-            var backColors = new Color[] { Color.FromArgb(255, 6, 15, 30), Color.FromArgb(255, 6, 15, 30), Color.White, Color.White };
+            var backColors = new Color[] { DarkPreviewBackColor, DarkPreviewBackColor, LightPreviewBackColor, LightPreviewBackColor };
             for (int i = 0; i < categories.Length; ++i)
             {
                 var stationLogo = _station.StationLogos?.FirstOrDefault(arg => arg.Category != null && arg.Category.Equals(categories[i], StringComparison.OrdinalIgnoreCase));
@@ -106,7 +112,7 @@ namespace epg123_gui
                 {
                     var logoFilepath = $"{baseLogoPath}{_station.Logo.Md5}.png";
 
-                    pbDefaultLocal.BackColor = Color.FromArgb(255, 6, 15, 30);
+                    pbDefaultLocal.BackColor = DarkPreviewBackColor;
                     if (isRemote) pbDefaultLocal.Load(logoFilepath);
                     else pbDefaultLocal.Image = Image.FromFile(logoFilepath);
                     pbDefaultLocal.Tag = logoFilepath;
@@ -119,7 +125,7 @@ namespace epg123_gui
         {
             if (_station.Logo != null)
             {
-                pbDefaultRemote.BackColor = Color.FromArgb(255, 6, 15, 30);
+                pbDefaultRemote.BackColor = DarkPreviewBackColor;
                 pbDefaultRemote.Load(_station.Logo.Url);
             }
 
@@ -130,25 +136,25 @@ namespace epg123_gui
                 {
                     case "dark":
                         if (pbDarkRemote.Image != null) break;
-                        pbDarkRemote.BackColor = Color.FromArgb(255, 6, 15, 30);
+                        pbDarkRemote.BackColor = DarkPreviewBackColor;
                         pbDarkRemote.Load(image.Url);
                         pbDarkRemote.Refresh();
                         break;
                     case "white":
                         if (pbWhiteRemote.Image != null) break;
-                        pbWhiteRemote.BackColor = Color.FromArgb(255, 6, 15, 30);
+                        pbWhiteRemote.BackColor = DarkPreviewBackColor;
                         pbWhiteRemote.Load(image.Url);
                         pbWhiteRemote.Refresh();
                         break;
                     case "light":
                         if (pbLightRemote.Image != null) break;
-                        pbLightRemote.BackColor = Color.White;
+                        pbLightRemote.BackColor = LightPreviewBackColor;
                         pbLightRemote.Load(image.Url);
                         pbLightRemote.Refresh();
                         break;
                     case "gray":
                         if (pbGrayRemote.Image != null) break;
-                        pbGrayRemote.BackColor = Color.White;
+                        pbGrayRemote.BackColor = LightPreviewBackColor;
                         pbGrayRemote.Load(image.Url);
                         pbGrayRemote.Refresh();
                         break;
