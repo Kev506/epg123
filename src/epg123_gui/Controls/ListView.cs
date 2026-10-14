@@ -32,12 +32,18 @@ namespace epg123_gui
                 ForeColor = Station.Include ? SystemColors.WindowText : SystemColors.GrayText;
             };
 
-            Station.LogoChanged += (sender, args) =>
+            Station.LogoChanged += async (sender, args) =>
             {
                 try
                 {
-                    if (ListView?.InvokeRequired ?? false) ListView?.Invoke(new Action(delegate { ListView?.Invalidate(Bounds); }));
-                    else ListView?.Invalidate(Bounds);
+                    if (ListView?.InvokeRequired ?? false)
+                    {
+                        await ListView.InvokeAsync(() => ListView.Invalidate(Bounds));
+                    }
+                    else
+                    {
+                        ListView?.Invalidate(Bounds);
+                    }
                 }
                 catch (ThreadInterruptedException) { }
             };
