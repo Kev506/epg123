@@ -225,66 +225,79 @@ namespace epg123_gui
         private async void pictureBox_DragDrop(object sender, DragEventArgs e)
         {
             Bitmap imgBitmap = null;
-            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+            Image image = null;
+            try
             {
-                imgBitmap = (Bitmap)e.Data.GetData(DataFormats.Bitmap, true);
-            }
-            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                imgBitmap = Image.FromFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]).Clone() as Bitmap;
-            }
-            else if (e.Data.GetDataPresent(DataFormats.StringFormat))
-            {
-                var link = (string)e.Data.GetData(DataFormats.StringFormat);
-                if (!link.StartsWith("http", StringComparison.OrdinalIgnoreCase)) return;
-
-                try
+                if (e.Data.GetDataPresent(DataFormats.Bitmap))
                 {
-                    using (var client = new HttpClient())
-                    using (var stream = new MemoryStream(await client.GetByteArrayAsync(link)))
+                    imgBitmap = (Bitmap)e.Data.GetData(DataFormats.Bitmap, true);
+                }
+                else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                    imgBitmap = Image.FromFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]).Clone() as Bitmap;
+                }
+                else if (e.Data.GetDataPresent(DataFormats.StringFormat))
+                {
+                    var link = (string)e.Data.GetData(DataFormats.StringFormat);
+                    if (!link.StartsWith("http", StringComparison.OrdinalIgnoreCase)) return;
+
+                    try
                     {
-                        imgBitmap = Image.FromStream(stream) as Bitmap;
+                        using (var client = new HttpClient())
+                        using (var stream = new MemoryStream(await client.GetByteArrayAsync(link)))
+                        {
+                            imgBitmap = Image.FromStream(stream) as Bitmap;
+                        }
+                    }
+                    catch
+                    {
+                        // do nothing, will return anyway since imgBitmap will be null
                     }
                 }
-                catch
+
+                var target = (PictureBox)sender;
+                if (imgBitmap == null || _selectedBox == target) return;
+
+                var path = $"{baseLogoPath}{_customLogo}";
+                if (target.Image != null)
                 {
-                    // do nothing, will return anyway since imgBitmap will be null
+                    target.Image.Dispose();
+                    target.Image = null;
+                    target.Refresh();
                 }
-            }
-            var target = (PictureBox)sender;
-            if (imgBitmap == null || _selectedBox == target) return;
 
-            var path = $"{baseLogoPath}{_customLogo}";
-            if (target.Image != null)
-            {
-                target.Image.Dispose();
-                target.Image = null;
-                target.Refresh();
-            }
-
-            var image = Helper.CropAndResizeImage(imgBitmap);
-            if (isRemote)
-            {
-                using (var ms = new MemoryStream())
+                image = Helper.CropAndResizeImage(imgBitmap);
+                if (isRemote)
                 {
-                    image.Save(ms, ImageFormat.Png);
-                    if (SchedulesDirect.UploadLogo(path.Replace("/logos/", "/logos/custom/"), ms.ToArray()) && !availableLogos.Contains($"{_customLogo}"))
+                    using (var ms = new MemoryStream())
                     {
-                        availableLogos.Add($"{_customLogo}");
-                        LogoChanged = true;
+                        image.Save(ms, ImageFormat.Png);
+                        if (SchedulesDirect.UploadLogo(path.Replace("/logos/", "/logos/custom/"), ms.ToArray()) && !availableLogos.Contains($"{_customLogo}"))
+                        {
+                            availableLogos.Add($"{_customLogo}");
+                            LogoChanged = true;
+                        }
                     }
                 }
-            }
-            else
-            {
-                if (File.Exists(path)) DeleteToRecycle(path);
-                image.Save(path, ImageFormat.Png);
-                if (!availableLogos.Contains($"{_customLogo}")) availableLogos.Add($"{_customLogo}");
-            }
-            imgBitmap.Dispose();
-            image.Dispose();
+                else
+                {
+                    if (File.Exists(path)) DeleteToRecycle(path);
+                    image.Save(path, ImageFormat.Png);
+                    if (!availableLogos.Contains($"{_customLogo}")) availableLogos.Add($"{_customLogo}");
+                }
 
-            LoadLocalImages();
+                LoadLocalImages();
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteError($"Failed to process dropped logo image. Exception:{Helper.ReportExceptionMessages(ex)}");
+                MessageBox.Show("Unable to process dropped image. See log for details.", "Logo Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                imgBitmap?.Dispose();
+                image?.Dispose();
+            }
         }
 
         private void contextMenuStrip2_Opening(object sender, CancelEventArgs e)

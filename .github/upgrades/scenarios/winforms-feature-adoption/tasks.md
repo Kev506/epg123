@@ -1,15 +1,15 @@
 # WinForms Feature Adoption Progress
 
-**Progress**: 3/7 tasks complete <progress value="43" max="100"></progress> 43%
+**Progress**: 5/8 tasks complete <progress value="62" max="100"></progress> 62%
 **Status**: Not Started
 Modernize the `epg123_gui` WinForms application by adopting dark mode, modern async UI patterns, and incremental MVVM architecture. The work is sequenced to establish application-level theming first, then improve async reliability, then extract presentation logic into view models.
 
 **Progress**: 1/8 tasks complete <progress value="12" max="100"></progress> 12%
-
+- ✅ 01-enable-dark-mode-bootstrap: Enable dark mode at application startup ([Content](tasks/01-enable-dark-mode-bootstrap/task.md), [Progress](tasks/01-enable-dark-mode-bootstrap/progress-details.md))
 - ✅ 02-adapt-dark-mode-core-forms: Adapt high-impact forms for dark mode ([Content](tasks/02-adapt-dark-mode-core-forms/task.md), [Progress](tasks/02-adapt-dark-mode-core-forms/progress-details.md))
 - ✅ 03-adapt-dark-mode-secondary-forms: Adapt remaining forms for dark mode consistency ([Content](tasks/03-adapt-dark-mode-secondary-forms/task.md), [Progress](tasks/03-adapt-dark-mode-secondary-forms/progress-details.md))
 - ✅ 04-modernize-async-ui-marshaling: Replace legacy UI marshaling with modern async APIs ([Content](tasks/04-modernize-async-ui-marshaling/task.md), [Progress](tasks/04-modernize-async-ui-marshaling/progress-details.md))
-- 🔲 02-adapt-dark-mode-core-forms: Adapt high-impact forms for dark mode
+- ✅ 05-harden-async-event-handlers: Improve async event-handler reliability ([Content](tasks/05-harden-async-event-handlers/task.md), [Progress](tasks/05-harden-async-event-handlers/progress-details.md))
 - 🔲 03-adapt-dark-mode-secondary-forms: Adapt remaining forms for dark mode consistency
 - 🔲 04-modernize-async-ui-marshaling: Replace legacy UI marshaling with modern async APIs
 - 🔲 05-harden-async-event-handlers: Improve async event-handler reliability
