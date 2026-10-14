@@ -1,4 +1,5 @@
 ﻿using epg123;
+using epg123_gui.ViewModels;
 using epg123_gui.Properties;
 using GaRyan2.SchedulesDirectAPI;
 using GaRyan2.Utilities;
@@ -38,6 +39,7 @@ namespace epg123_gui
         }
         private readonly EpgTaskScheduler _task = new EpgTaskScheduler();
         private readonly ImageList _imageList = new ImageList();
+        private readonly ConfigFormViewModel _viewModel = new ConfigFormViewModel();
         private bool _newLogin;
         private bool _clientSetup;
 
@@ -56,6 +58,8 @@ namespace epg123_gui
 
             // create form objects
             InitializeComponent();
+            InitializeViewModelBindings();
+            DataContext = _viewModel;
             _imageList.ColorDepth = ColorDepth.Depth32Bit;
 
             // adjust components for screen dpi
@@ -84,6 +88,13 @@ namespace epg123_gui
 
             // initialize the logger
             Logger.Initialize(Helper.Epg123TraceLogPath, "Activating the configuration GUI", false);
+        }
+
+        private void InitializeViewModelBindings()
+        {
+            txtBaseApi.DataBindings.Add(nameof(TextBox.Text), _viewModel, nameof(ConfigFormViewModel.BaseApiUrl), true, DataSourceUpdateMode.OnPropertyChanged);
+            txtBaseArtwork.DataBindings.Add(nameof(TextBox.Text), _viewModel, nameof(ConfigFormViewModel.BaseArtworkUrl), true, DataSourceUpdateMode.OnPropertyChanged);
+            ckDebug.DataBindings.Add(nameof(CheckBox.Checked), _viewModel, nameof(ConfigFormViewModel.UseDebug), true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)
@@ -284,9 +295,9 @@ namespace epg123_gui
             ckXmltvExtendedInfo.Checked = Config.XmltvExtendedInfoInTitleDescriptions;
             cbXmltvSingleImage.Checked = Config.XmltvSingleImage;
 
-            txtBaseApi.Text = Config.BaseApiUrl;
-            txtBaseArtwork.Text = Config.BaseArtworkUrl;
-            ckDebug.Checked = Config.UseDebug;
+            _viewModel.BaseApiUrl = Config.BaseApiUrl;
+            _viewModel.BaseArtworkUrl = Config.BaseArtworkUrl;
+            _viewModel.UseDebug = Config.UseDebug;
             var index = Array.FindIndex(daysRetention, arg => arg == Config.CacheRetention);
             cbCacheRetention.Text = (string)cbCacheRetention.Items[index];
             if (Helper.InstallMethod != Helper.Installation.CLIENT)
@@ -1454,17 +1465,17 @@ namespace epg123_gui
 
         private void txtBaseApi_TextChanged(object sender, EventArgs e)
         {
-            Config.BaseApiUrl = txtBaseApi.Text;
+            if (Config != null) Config.BaseApiUrl = _viewModel.BaseApiUrl;
         }
 
         private void txtBaseArtwork_TextChanged(object sender, EventArgs e)
         {
-            Config.BaseArtworkUrl = txtBaseArtwork.Text;
+            if (Config != null) Config.BaseArtworkUrl = _viewModel.BaseArtworkUrl;
         }
 
         private void ckDebug_CheckedChanged(object sender, EventArgs e)
         {
-            Config.UseDebug = ckDebug.Checked;
+            if (Config != null) Config.UseDebug = _viewModel.UseDebug;
         }
 
         private void btnChangeServer_Click(object sender, EventArgs e)
