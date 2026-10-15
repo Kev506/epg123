@@ -1046,7 +1046,11 @@ namespace epg123_gui
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel1.LinkVisited = true;
-            Process.Start("http://garyan2.github.io/download.html");
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "http://garyan2.github.io/download.html",
+                UseShellExecute = true
+            });
         }
         #endregion
 
@@ -1649,7 +1653,11 @@ namespace epg123_gui
         private void txtAcctExpires_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             txtAcctExpires.LinkVisited = true;
-            Process.Start("https://schedulesdirect.org");
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://schedulesdirect.org",
+                UseShellExecute = true
+            });
         }
     }
 }

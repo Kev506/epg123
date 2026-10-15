@@ -36,13 +36,19 @@ namespace epg123_gui
             {
                 try
                 {
-                    if (ListView?.InvokeRequired ?? false)
+                    var lv = ListView;
+                    if (lv == null || lv.IsDisposed || !lv.IsHandleCreated) return;
+
+                    if (lv.InvokeRequired)
                     {
-                        await ListView.InvokeAsync(() => ListView.Invalidate(Bounds));
+                        await lv.InvokeAsync(() =>
+                        {
+                            if (!lv.IsDisposed && lv.IsHandleCreated) lv.Invalidate(Bounds);
+                        });
                     }
                     else
                     {
-                        ListView?.Invalidate(Bounds);
+                        lv.Invalidate(Bounds);
                     }
                 }
                 catch (ThreadInterruptedException) { }
