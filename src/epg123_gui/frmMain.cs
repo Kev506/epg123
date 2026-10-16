@@ -1620,13 +1620,27 @@ namespace epg123_gui
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel2.LinkVisited = true;
-            Process.Start($"{_BaseServerAddress}server.log");
+            try {                 
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = $"{_BaseServerAddress}server.log",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open trace log file.", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel3.LinkVisited = true;
-            Process.Start(_BaseServerAddress);
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = _BaseServerAddress,
+                UseShellExecute = true
+            });
         }
         #endregion
 
