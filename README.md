@@ -1,4 +1,4 @@
-# Introduction
+## 📝 Introduction
 Electronic Program Guide in 1-2-3 (EPG123) for Windows Media Center and IPTV Players.
 
 For many Windows Media Center TV users, July 2015 was not a good month. Microsoft changed their provider of guide data from the highly stable and reliable Zap2it (Tribune), to the almost amateurish Rovi (Rovi Corp). To be fair to Rovi, the data provided by them to Microsoft is probably fine, but the execution of the transfer and the continuing struggles has been amazingly disappointing.
@@ -7,29 +7,29 @@ EPG123 was created to not only compensate for the lacking guide information, but
 
 EPG123 can also be used to collect guide data for use in many popular IPTV Players such as TiviMate. Simply download the data and place your zip file on your cloud server, i.e. Dropbox, Nextcloud etc, set the download link in your player EPG settings, assign to channels and your all set. Once you've setup your channels etc in EPG123, set up a schedule to run automatically.
 
-# Acknowledgments
+## 🙏 Acknowledgments
 This project was born out of frustration and desperation following the transfer from Zap2it to Rovi. It could never have made it as far as it has without the involvement of a lot of WMC enthusiasts and users at [The Green Button](http://www.thegreenbutton.tv). Many of the improvements and features were born of their experiences and suggestions. There was also quite a bit of technical support provided by Schedules Direct to ensure the EPG123 client/server interaction was optimal.
 
-# Configuration GUI
+## 🛠️ Configuration GUI
 With a Schedules Direct subscription, you can have up to 4 lineups to provide all the guide listings you may need. You can select what stations to download and what stations to ignore. Missing movie posters can be retrieved from [TMDb](http://www.themoviedb.org) along with some other customizations.
 
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/configuration_gui.png"></p>
 
-# Client GUI
+## 📬 Client GUI
 The client allows for automatic or manual mapping of guide listings with tuner channels, handle database configuration backups and restores, database rebuilds if needed, and more. **Windows Media Center only**
 
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/client_gui.png"></p>
 
-# Guide & WMC Tweaks
+## 🔧 Guide & WMC Tweaks
 EPG123 provides the ability to adjust many dimensional aspects of the guide. Some WMC tweaks are added as well to improve user experience. **Windows Media Center only**
 
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/tweak_gui.png"></p>
 
-# Windows Media Center Guide
+## 📺 Windows Media Center Guide
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/guide_default.png"></p>
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/guide_22x10.png"></p>
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/guide_12x24.png"></p>
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/guide_48x7.png"></p>
 
-# IPTV Player Guide
+## 🖥️ IPTV Player Guide
 <p align="center"><img src="https://github.com/kev506/epg123/blob/master/web.resources/iptv-guide.png"></p>
