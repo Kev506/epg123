@@ -16,12 +16,12 @@ With a Schedules Direct subscription, you can have up to 4 lineups to provide al
 <p align="center"><img src="https://github.com/garyan2/epg123/blob/master/web.resources/configuration_gui.png"></p>
 
 # Client GUI
-The client allows for automatic or manual mapping of guide listings with tuner channels, handle database configuration backups and restores, database rebuilds if needed, and more.
+The client allows for automatic or manual mapping of guide listings with tuner channels, handle database configuration backups and restores, database rebuilds if needed, and more. **Windows Media Center only**
 
 <p align="center"><img src="https://github.com/garyan2/epg123/blob/master/web.resources/client_gui.png"></p>
 
 # Guide & WMC Tweaks
-EPG123 provides the ability to adjust many dimensional aspects of the guide. Some WMC tweaks are added as well to improve user experience.
+EPG123 provides the ability to adjust many dimensional aspects of the guide. Some WMC tweaks are added as well to improve user experience. **Windows Media Center only**
 
 <p align="center"><img src="https://github.com/garyan2/epg123/blob/master/web.resources/tweak_gui.png"></p>
 <p align="center"><img src="https://github.com/garyan2/epg123/blob/master/web.resources/guide_default.png"></p>
