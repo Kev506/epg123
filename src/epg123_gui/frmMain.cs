@@ -1629,18 +1629,25 @@ namespace epg123_gui
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to open trace log file.", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Failed to open log file.", "File not found", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             linkLabel3.LinkVisited = true;
-            Process.Start(new ProcessStartInfo
+            try
             {
-                FileName = _BaseServerAddress,
-                UseShellExecute = true
-            });
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = _BaseServerAddress,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to open server address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
         #endregion
 
