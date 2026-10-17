@@ -2,11 +2,11 @@
 CLS
 
 SETLOCAL ENABLEEXTENSIONS
-SET COMPILER=C:\Program Files (x86)\Inno Setup 5\iscc.exe
+SET COMPILER=C:\Program Files\Inno Setup 7\iscc.exe
 SET BASE=..\..\bin\output
 SET PORTABLE=%BASE%\portable
 SET SETUP=%BASE%\setup
-SET RELEASE=..\..\bin\Release
+SET RELEASE=..\..\bin\Release\net10.0-windows
 
 ECHO Clearing last build contents ...
 RD /S /Q "%PORTABLE%"
@@ -20,23 +20,12 @@ IF ERRORLEVEL==2 "%COMPILER%" /Qp "epg123InnoSetupScript.iss"
 IF ERRORLEVEL==1 "%COMPILER%" /Qp "epg123InnoSetupScript.iss" /DSIGN_INSTALLER
 
 ECHO Copying release files to portable folder ...
-COPY /Y "%RELEASE%\epg123.exe" "%PORTABLE%"
-COPY /Y "%RELEASE%\epg123_gui.exe" "%PORTABLE%"
-COPY /Y "%RELEASE%\epg123_gui.exe.config" "%PORTABLE%"
-COPY /Y "%RELEASE%\hdhr2mxf.exe" "%PORTABLE%"
-COPY /Y "%RELEASE%\Newtonsoft.Json.dll" "%PORTABLE%"
-COPY /Y "%RELEASE%\epg123Client.exe" "%PORTABLE%"
-COPY /Y "%RELEASE%\epg123Client.exe.config" "%PORTABLE%"
-COPY /Y "%RELEASE%\epg123Transfer.exe" "%PORTABLE%"
-COPY /Y "%RELEASE%\epg123Transfer.exe.config" "%PORTABLE%"
-COPY /Y "%RELEASE%\logViewer.exe" "%PORTABLE%"
-COPY /Y "%RELEASE%\logViewer.exe.config" "%PORTABLE%"
-COPY /Y "%RELEASE%\GaRyan2.Github.dll" "%PORTABLE%"
-COPY /Y "%RELEASE%\GaRyan2.MxfXmltvTools.dll" "%PORTABLE%"
-COPY /Y "%RELEASE%\GaRyan2.SchedulesDirect.dll" "%PORTABLE%"
-COPY /Y "%RELEASE%\GaRyan2.Tmdb.dll" "%PORTABLE%"
-COPY /Y "%RELEASE%\GaRyan2.Utilities.dll" "%PORTABLE%"
-COPY /Y "%RELEASE%\GaRyan2.WmcUtilities.dll" "%PORTABLE%"
+COPY /Y "%RELEASE%\*.exe" "%PORTABLE%"
+COPY /Y "%RELEASE%\*.dll" "%PORTABLE%"
+COPY /Y "%RELEASE%\*.dll.config" "%PORTABLE%"
+COPY /Y "%RELEASE%\*.deps.json" "%PORTABLE%"
+COPY /Y "%RELEASE%\*.runtimeconfig.json" "%PORTABLE%"
+IF EXIST "%RELEASE%\runtimes" XCOPY "%RELEASE%\runtimes" "%PORTABLE%\runtimes" /E /I /Y
 COPY /Y "docs\license.rtf" "%PORTABLE%"
 
 SET /P VER=Enter version number for zip files:
