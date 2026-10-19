@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -109,5 +109,7 @@
     <ProjectReference Include="..\GaRyan2.Utilities\GaRyan2.Utilities.csproj" />
     <ProjectReference Include="..\GaRyan2.WmcUtilities\GaRyan2.WmcUtilities.csproj" />
   </ItemGroup>
-  <PropertyGroup />
+  <PropertyGroup>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
 </Project>

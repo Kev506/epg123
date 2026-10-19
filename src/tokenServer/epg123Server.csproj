@@ -25,8 +25,9 @@
     <OutputPath>..\..\bin\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\epg123\epgConfig.cs">

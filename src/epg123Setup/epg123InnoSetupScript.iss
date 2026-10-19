@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EPG123"
-#define SourcePath "..\..\bin\Release\net10.0-windows"
+#define SourcePath "..\..\bin\Release\net10.0-windows10.0.26100.0"
 #define MyAppExeName "epg123_gui.exe"
 #define MyClientName "EPG123 Client"
 #define MyClientExeName "epg123Client.exe"

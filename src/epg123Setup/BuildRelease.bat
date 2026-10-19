@@ -6,7 +6,7 @@ SET COMPILER=C:\Program Files\Inno Setup 7\iscc.exe
 SET BASE=..\..\bin\output
 SET PORTABLE=%BASE%\portable
 SET SETUP=%BASE%\setup
-SET RELEASE=..\..\bin\Release\net10.0-windows
+SET RELEASE=..\..\bin\Release\net10.0-windows10.0.26100.0
 
 ECHO Clearing last build contents ...
 RD /S /Q "%PORTABLE%"

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -28,6 +28,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\epg123Transfer.ico</ApplicationIcon>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BDATunePIA, Version=6.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=AMD64">
