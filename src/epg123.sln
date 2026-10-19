@@ -9,7 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "epg123Setup", "epg123Setup"
 	ProjectSection(SolutionItems) = preProject
 		epg123Setup\BuildRelease.bat = epg123Setup\BuildRelease.bat
 		epg123Setup\epg123InnoSetupScript.iss = epg123Setup\epg123InnoSetupScript.iss
-		TextFile1.txt = TextFile1.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "epg123Client", "epg123Client\epg123Client.csproj", "{12FE1EA6-F6D3-4B06-8707-D3C06663FBAC}"
