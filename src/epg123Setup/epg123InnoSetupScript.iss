@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EPG123"
-#define SourcePath "..\..\bin\Release"
+#define SourcePath "..\..\bin\Release\net10.0-windows"
 #define MyAppExeName "epg123_gui.exe"
 #define MyClientName "EPG123 Client"
 #define MyClientExeName "epg123Client.exe"
@@ -82,26 +82,18 @@ Name: "startmenu"; Description: "Create start menu icons"; GroupDescription: "{c
 [Files]
 Source: "misc\ndp462-kb3151802-web.exe"; DestDir: "{tmp}"; Flags: dontcopy
 Source: "{#SourcePath}\epg123.exe"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main1\epg123
-Source: "{#SourcePath}\epg123.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Attribs: hidden; Components: main1\epg123
 Source: "{#SourcePath}\epg123_gui.exe"; DestDir: "{app}"; BeforeInstall: TaskKill('epg123_gui.exe'); Flags: ignoreversion signonce; Components: main1\epg123 main2 and not main1
-Source: "{#SourcePath}\epg123_gui.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Attribs: hidden; Components: main1\epg123 main2 and not main1
 Source: "{#SourcePath}\epg123Server.exe"; DestDir: "{app}"; BeforeInstall: TaskKill('epg123Server.exe'); Flags: ignoreversion signonce; Components: main1\epg123 main1\hdhr
 Source: "{#SourcePath}\hdhr2mxf.exe"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main1\hdhr
-Source: "{#SourcePath}\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: main1\epg123 main1\hdhr main2
 Source: "{#SourcePath}\epg123Client.exe"; DestDir: "{app}"; BeforeInstall: TaskKill('epg123Client.exe'); Flags: ignoreversion signonce; Components: main2
-Source: "{#SourcePath}\epg123Client.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Attribs: hidden; MinVersion: 6.1; OnlyBelowVersion: 6.2; Components: main2
 Source: "{#SourcePath}\epg123Transfer.exe"; DestDir: "{app}"; BeforeInstall: TaskKill('epg123Transfer.exe'); Flags: ignoreversion signonce; Components: main2
-Source: "{#SourcePath}\epg123Transfer.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Attribs: hidden; MinVersion: 6.1; OnlyBelowVersion: 6.2; Components: main2
 Source: "{#SourcePath}\epgTray.exe"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main2\tray
-Source: "{#SourcePath}\epgTray.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Attribs: hidden; Components: main2\tray
 Source: "{#SourcePath}\logViewer.exe"; DestDir: "{app}"; BeforeInstall: TaskKill('logViewer.exe'); Flags: ignoreversion signonce
-Source: "{#SourcePath}\logViewer.exe.config"; DestDir: "{app}"; Flags: ignoreversion; Attribs: hidden;
-Source: "{#SourcePath}\GaRyan2.Github.dll"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main1 main2
-Source: "{#SourcePath}\GaRyan2.MxfXmltvTools.dll"; DestDir: "{app}"; Flags: ignoreversion signonce
-Source: "{#SourcePath}\GaRyan2.SchedulesDirect.dll"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main1\epg123 main2
-Source: "{#SourcePath}\GaRyan2.Tmdb.dll"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main1\epg123
-Source: "{#SourcePath}\GaRyan2.Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion signonce
-Source: "{#SourcePath}\GaRyan2.WmcUtilities.dll"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main1\hdhr main2
+Source: "{#SourcePath}\*.dll"; DestDir: "{app}"; Flags: ignoreversion signonce; Components: main1 main2
+Source: "{#SourcePath}\*.dll.config"; DestDir: "{app}"; Flags: ignoreversion; Components: main1 main2
+Source: "{#SourcePath}\*.deps.json"; DestDir: "{app}"; Flags: ignoreversion; Components: main1 main2
+Source: "{#SourcePath}\*.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion; Components: main1 main2
+Source: "{#SourcePath}\runtimes\*"; DestDir: "{app}\runtimes"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main1 main2
 Source: "docs\license.rtf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "links\EPG123 Online.url"; DestDir: "{commonprograms}\{#MyAppName}"; Tasks: startmenu; Flags: ignoreversion
 
@@ -161,19 +153,19 @@ Name: {code:GetRootDataFolder}; Permissions: everyone-full
 [InstallDelete]
 Type: files; Name: "{app}\Newtonsoft.json.dll"; Components: not main1\epg123 main1\hdhr
 Type: files; Name: "{app}\epg123.exe"; Components: not main1\epg123
-Type: files; Name: "{app}\epg123.exe.config"; Components: not main1\epg123
+Type: files; Name: "{app}\epg123.dll.config"; Components: not main1\epg123
 Type: files; Name: "{app}\epg123_gui.exe"; Components: not main1\epg123 main2
-Type: files; Name: "{app}\epg123_gui.exe.config"; Components: not main1\epg123 main2
+Type: files; Name: "{app}\epg123_gui.dll.config"; Components: not main1\epg123 main2
 Type: files; Name: "{app}\epg123Server.exe"; Components: not main1\epg123 main1\hdhr
 Type: files; Name: "{app}\hdhr2mxf.exe"; Components: not main1\hdhr
 Type: files; Name: "{app}\epg123Client.exe"; Components: not main2
-Type: files; Name: "{app}\epg123Client.exe.config"; Components: not main2
+Type: files; Name: "{app}\epg123Client.dll.config"; Components: not main2
 Type: files; Name: "{app}\epg123Transfer.exe"; Components: not main2
-Type: files; Name: "{app}\epg123Transfer.exe.config"; Components: not main2
+Type: files; Name: "{app}\epg123Transfer.dll.config"; Components: not main2
 Type: files; Name: "{app}\epgTray.exe"; BeforeInstall: TaskKill('epgTray.exe'); Components: not main2\tray
-Type: files; Name: "{app}\epgTray.exe.config"; Components: not main2\tray
+Type: files; Name: "{app}\epgTray.dll.config"; Components: not main2\tray
 Type: files; Name: "{app}\logViewer.exe";
-Type: files; Name: "{app}\logViewer.exe.config";
+Type: files; Name: "{app}\logViewer.dll.config";
 Type: files; Name: "{app}\GaRyan2.Github.dll"; Components: not main1\epg123
 Type: files; Name: "{app}\GaRyan2.MxfXmltvTools.dll"; Components: not main1\epg123 main1\hdhr main2
 Type: files; Name: "{app}\GaRyan2.SchedulesDirect.dll"; Components: not main1\epg123

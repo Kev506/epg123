@@ -119,6 +119,7 @@ namespace epg123_gui
 
             // load configuration file and set component states/values
             LoadConfigurationFile(false);
+            if (Config == null) return;
 
             // complete the title bar label with version number
             var info = string.Empty;
